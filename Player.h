@@ -12,6 +12,7 @@ public:
     enum class stateObject {left, right, up, down, jump, stay};
     stateObject state;
     int playerScore;
+    float currentFrame{ 0.0f };
 
     Player(sf::Image& image, sf::String Name, TileMap& lev, float X, float Y, int W, int H) : Entity(image, Name, X, Y, W, H)
     {
@@ -23,20 +24,21 @@ public:
     }
 
 
-    void control() {
+    void control(float time) {
+        
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
             state = stateObject::left;
             speed = 0.1;
-            //currentFrame += 0.005*time;
-            //if (currentFrame > 3) currentFrame -= 3;
-            //p.sprite.setTextureRect(IntRect(96 * int(currentFrame), 135, 96, 54));
+            currentFrame += 0.005 * time;
+            if (currentFrame > 11) currentFrame -= 11;
+            sprite.setTextureRect(sf::IntRect((297 + 45 * (int)currentFrame) + 41, 102, -41, 30));
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
             state = stateObject::right;
             speed = 0.1;
-            //	currentFrame += 0.005*time;
-            //	if (currentFrame > 3) currentFrame -= 3;
-            //	p.sprite.setTextureRect(IntRect(96 * int(currentFrame), 232, 96, 54));
+            	currentFrame += 0.005 * time;
+            	if (currentFrame > 11) currentFrame -= 11;
+            	sprite.setTextureRect(sf::IntRect(297 + 45 * (int)currentFrame, 102, 41, 30));
         }
 
         if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) && (onGround)) {
@@ -57,7 +59,7 @@ public:
 
     void Update(float time)
     {
-        control();
+        control(time);
         
         switch (state)
         {
