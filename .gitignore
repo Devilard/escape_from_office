@@ -1,0 +1,14 @@
+*.user
+
+
+x64/
+x86/
+.vs/
+
+
+
+/tiled_prod/безымянный.tmx
+/tiled_prod/tiled-project.tmx
+/tiled_prod/tiled-session.tmx
+
+office_p.2dbf32a1/
