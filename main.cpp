@@ -19,7 +19,9 @@
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(640, 480), "Escape from Office");
+
     view.reset(sf::FloatRect(0, 0, 640, 480));
+
     std::string str_path{ "tiled_prod/map.tmx" };
     TileMap lvl;
     lvl.load(str_path);
@@ -74,8 +76,13 @@ int main()
     //Hero
     /////////////////////
 
+    std::list<Entity*> entities;
+    std::list<Entity*>::iterator it;
+
+
+
     Object player = lvl.getObject("Player");
-    Object easyEnemyObject = lvl.getObject("easyEnemy");
+    //Object easyEnemyObject = lvl.getObject("easyEnemy");
 
     sf::Image hero_img;
     hero_img.loadFromFile("layouts/img/MilesTailsPrower.gif");
@@ -87,7 +94,13 @@ int main()
     sf::Image easyEnemyImage;
     easyEnemyImage.loadFromFile("layouts/img/shamaich.png");
     easyEnemyImage.createMaskFromColor(sf::Color(255, 0, 0));
-    Enemy easyEnemy(easyEnemyImage, "EasyEnemy", lvl, easyEnemyObject.rect.left, easyEnemyObject.rect.top, 200, 97);
+    //Enemy easyEnemy(easyEnemyImage, "EasyEnemy", lvl, easyEnemyObject.rect.left, easyEnemyObject.rect.top, 200, 97);
+
+    std::vector<Object> e = lvl.getObjectsByName("easyEnemy");
+
+    for (int i = 0; i < e.size(); i++)
+        entities.push_back(new Enemy(easyEnemyImage, "EasyEnemy", lvl, e[i].rect.left, e[i].rect.top, 200, 97));
+
 
     float currentFrame{ 0.0f };
     sf::Clock clock;
@@ -144,8 +157,13 @@ int main()
 
 
 
-        p.Update(time);
-        easyEnemy.update(time);
+        p.update(time);
+        //easyEnemy.update(time);
+        for (it = entities.begin(); it != entities.end(); it++)
+        {
+            (*it)->update(time);
+        }
+
         window.setView(view);
         viewMap(time);
         
@@ -190,7 +208,11 @@ int main()
         sprite_tower_ico.setPosition(view.getCenter().x, view.getCenter().y + 200);
 
         window.draw(lvl);
-        window.draw(easyEnemy.sprite);
+        //window.draw(easyEnemy.sprite);
+        for (it = entities.begin(); it != entities.end(); it++)
+        {
+            window.draw((*it)->sprite);
+        }
         window.draw(p.sprite);
         window.display();
     }

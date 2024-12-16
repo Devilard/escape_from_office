@@ -57,7 +57,7 @@ public:
         }
     }
 
-    void Update(float time)
+    void update(float time)
     {
         control(time);
         

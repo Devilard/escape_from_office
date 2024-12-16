@@ -27,6 +27,8 @@ public:
 	{
 		return sf::FloatRect(x,y,w,h);
 	}
+
+	virtual void update(float time) = 0;
 };
 
 
