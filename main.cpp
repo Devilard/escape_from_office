@@ -169,7 +169,7 @@ int main()
         {
             Entity* b = *it;
             b->update(time);
-            if (b->life == false)
+            if ((b->life == false) && b->isAnimationDeathEnd == true)
             {
                 it = entities.erase(it); delete b;
             }

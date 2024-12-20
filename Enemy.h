@@ -58,6 +58,16 @@ public:
 			x += dx * time;
 			sprite.setPosition(x + w / 2, y + h / 2);
 			if (health <= 0) { life = false; }
+
+			if (life == false)
+			{
+				sprite.setColor(sf::Color::Red);
+				deathAnimationTimer += time;
+				if (deathAnimationTimer > 100)
+				{
+					isAnimationDeathEnd = true;
+				}
+			}
 		}
 	}
 
