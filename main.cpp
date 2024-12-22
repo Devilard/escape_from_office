@@ -85,8 +85,8 @@ int main()
     //Object easyEnemyObject = lvl.getObject("easyEnemy");
 
     sf::Image hero_img;
-    hero_img.loadFromFile("layouts/img/MilesTailsPrower.gif");
-    Player p(hero_img, "Player1", lvl, player.rect.left, player.rect.top, 40.0f, 30.0f);
+    hero_img.loadFromFile("layouts/img/hero.png");
+    Player p(hero_img, "Player1", lvl, player.rect.left, player.rect.top, 64.0f, 64.0f);
 
     bool showMissionText = true;
 

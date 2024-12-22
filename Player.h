@@ -12,14 +12,14 @@ public:
     enum class stateObject {left, right, up, down, jump, stay};
     stateObject state;
     int playerScore;
-    float currentFrame{ 0.0f };
+    float currentFrame{ 1.0f };
 
     Player(sf::Image& image, sf::String Name, TileMap& lev, float X, float Y, int W, int H) : Entity(image, Name, X, Y, W, H)
     {
         playerScore = 0; state = stateObject::stay; obj = lev.getAllObjects();
         if (name == "Player1")
         {
-            sprite.setTextureRect(sf::IntRect(4, 19, w, h));
+            sprite.setTextureRect(sf::IntRect(64, 0, w, h));
         }
     }
 
@@ -30,15 +30,15 @@ public:
             state = stateObject::left;
             speed = 0.1;
             currentFrame += 0.005 * time;
-            if (currentFrame > 11) currentFrame -= 11;
-            sprite.setTextureRect(sf::IntRect((297 + 45 * (int)currentFrame) + 41, 102, -41, 30));
+            if (currentFrame > 5) currentFrame -= 4;
+            sprite.setTextureRect(sf::IntRect(((64 * (int)currentFrame)+64) , 0, -64, 64));
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
             state = stateObject::right;
             speed = 0.1;
             	currentFrame += 0.005 * time;
-            	if (currentFrame > 11) currentFrame -= 11;
-            	sprite.setTextureRect(sf::IntRect(297 + 45 * (int)currentFrame, 102, 41, 30));
+            	if (currentFrame > 5) currentFrame -= 4;
+            	sprite.setTextureRect(sf::IntRect((64 * (int)currentFrame), 0, 64, 64));
         }
 
         if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) && (onGround)) {
