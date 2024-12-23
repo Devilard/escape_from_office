@@ -79,6 +79,7 @@ int main()
 
     std::list<Entity*> entities;
     std::list<Entity*>::iterator it;
+    std::list<Entity*>::iterator it2;
 
 
 
@@ -156,6 +157,12 @@ int main()
                     }
                     }
                 }
+
+                if (event.key.code == sf::Keyboard::R)
+                {
+                    for (int i = 0; i < e.size(); i++)
+                        entities.push_back(new Enemy(easyEnemyImage, "EasyEnemy", lvl, e[i].rect.left, e[i].rect.top, 200, 97));
+                }
             }
 
             if (event.type == sf::Event::MouseButtonPressed)
@@ -202,6 +209,18 @@ int main()
                     if ((p.dy > 0) && (p.onGround == false)) { (*it)->dx = 0; p.dy = -0.2; (*it)->health = 0; }//если прыгнули на врага,то даем врагу скорость 0,отпрыгиваем от него чуть вверх,даем ему здоровье 0
                     else {
                         p.health -= 5;	//иначе враг подошел к нам сбоку и нанес урон
+                    }
+                }
+            }
+
+            for (it2 = entities.begin(); it2 != entities.end(); it2++)
+            {
+                if ((*it)->getRect() != (*it2)->getRect())
+                {
+                    if ((*it)->getRect().intersects((*it2)->getRect()) && (*it)->name == "EasyEnemy" && (*it2)->name == "Bullet")
+                    {
+                        (*it)->health = 0;
+                        break;
                     }
                 }
             }

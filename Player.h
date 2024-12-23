@@ -6,6 +6,8 @@
 #include "Entity.h"
 #include "level.h"
 
+using sf::Keyboard;
+
 class Player : public Entity
 {
 public:
@@ -26,14 +28,14 @@ public:
 
     void control(float time) {
         
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+        if (Keyboard::isKeyPressed(Keyboard::Left) || Keyboard::isKeyPressed(Keyboard::A)) {
             state = stateObject::left;
             speed = 0.1;
             currentFrame += 0.005 * time;
             if (currentFrame > 5) currentFrame -= 4;
             sprite.setTextureRect(sf::IntRect(((64 * (int)currentFrame)+64) , 0, -64, 64));
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+        if (Keyboard::isKeyPressed(Keyboard::Right) || Keyboard::isKeyPressed(Keyboard::D)) {
             state = stateObject::right;
             speed = 0.1;
             	currentFrame += 0.005 * time;
@@ -41,14 +43,14 @@ public:
             	sprite.setTextureRect(sf::IntRect((64 * (int)currentFrame), 0, 64, 64));
         }
 
-        if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) && (onGround)) {
+        if ((Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::W)) && (onGround)) {
             state = stateObject::jump; dy = -0.5; onGround = false;//то состояние равно прыжок,прыгнули и сообщили, что мы не на земле
             //currentFrame += 0.005*time;
             //if (currentFrame > 3) currentFrame -= 3;
             //p.sprite.setTextureRect(IntRect(96 * int(currentFrame), 307, 96, 96));
         }
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+        if (Keyboard::isKeyPressed(Keyboard::Down) || Keyboard::isKeyPressed(Keyboard::S)) {
             state = stateObject::down;
 
             //currentFrame += 0.005*time;

@@ -8,36 +8,57 @@ class Bullet : public Entity
 public:
 	sf::Vector2f direct;
 	sf::Vector2f char_vector;
+	float vector_direction_length{ 0.0f };
 	float distance{ 0.0f };
+	float normal_vec_x;
+	float normal_vec_y;
+	sf::Vector2f temp_vec_dir;
 	Bullet(sf::Image &image, sf::String Name, TileMap& lvl, float X, float Y, int W, int H, sf::Vector2f direction) : Entity(image, Name, X, Y, W, H)
 	{
-		obj = lvl.getObjectsByName("solid");
-
+		//obj = lvl.getObjectsByName("solid");
+		obj = lvl.getAllObjects();
 		direct = direction;
 
 		distance =  0.0f;
+
+		temp_vec_dir.x = direct.x - x;
+		temp_vec_dir.y = direct.y - y;
+
+		vector_direction_length = sqrt((temp_vec_dir.x * temp_vec_dir.x) + (temp_vec_dir.y * temp_vec_dir.y));
+		normal_vec_x = temp_vec_dir.x / vector_direction_length;
+		normal_vec_y = temp_vec_dir.y / vector_direction_length;
 	}
 
 	void update(float time)
 	{
-
-		distance = sqrt((direct.x - x)*(direct.x -x) + (direct.y - y) * (direct.y - y));
-		
-		
-		
-		x += 0.2 * time * (direct.x - x) / distance;
-		y += 0.2 * time * (direct.y - y) / distance;
-
-
-		for (int i = 0; i < obj.size(); i++)
+		std::cout << "x " << x << "\n";
+		std::cout << "vector_direction_length " << vector_direction_length << "\n";
+		if (name == "Bullet")
 		{
-			if (getRect().intersects(obj[i].rect))
-			{
-				life = false;
-			}
-		}
+			
+			//distance = sqrt((direct.x - x) * (direct.x - x) + (direct.y - y) * (direct.y - y)); for RPG game
+		
+			x += normal_vec_x * time;
+			y += normal_vec_y * time;
 
-		sprite.setPosition(x + w/2, y + h/2);
+			if (x <= 0) x = 1;// задержка пули в левой стене, чтобы при проседании кадров она случайно не вылетела за предел карты и не было ошибки
+			if (y <= 0) y = 1;
+
+			for (int i = 0; i < obj.size(); i++)
+			{
+				
+				if (getRect().intersects(obj[i].rect))
+				{
+					life = false;
+					isAnimationDeathEnd = true;
+					break;
+
+				}
+				
+			}
+
+			sprite.setPosition(x + w / 2, y + h / 2);
+		}
 	}
 };
 
