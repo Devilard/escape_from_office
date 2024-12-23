@@ -10,6 +10,7 @@
 #include "mission.h"
 #include "Enemy.h"
 #include "level.h"
+#include "Bullet.h"
 
 
 
@@ -96,6 +97,11 @@ int main()
     easyEnemyImage.createMaskFromColor(sf::Color(255, 0, 0));
     //Enemy easyEnemy(easyEnemyImage, "EasyEnemy", lvl, easyEnemyObject.rect.left, easyEnemyObject.rect.top, 200, 97);
 
+    //bullet
+    sf::Image bullet_image;
+    bullet_image.loadFromFile("layouts/img/bullet.png");
+
+
     std::vector<Object> e = lvl.getObjectsByName("easyEnemy");
 
     for (int i = 0; i < e.size(); i++)
@@ -149,6 +155,17 @@ int main()
 
                     }
                     }
+                }
+            }
+
+            if (event.type == sf::Event::MouseButtonPressed)
+            {
+                if (event.key.code == sf::Mouse::Left)
+                {
+                    
+                    std::cout << "pos_x " << pos.x  << "\n";
+                    std::cout << "pos_y " << pos.y  << "\n";
+                    entities.push_back(new Bullet(bullet_image, "Bullet", lvl, p.x, p.y, 16,16, pos));
                 }
             }
 
