@@ -13,11 +13,13 @@ public:
 	float normal_vec_x;
 	float normal_vec_y;
 	sf::Vector2f temp_vec_dir;
+
 	Bullet(sf::Image &image, sf::String Name, TileMap& lvl, float X, float Y, int W, int H, sf::Vector2f direction) : Entity(image, Name, X, Y, W, H)
 	{
 		//obj = lvl.getObjectsByName("solid");
 		obj = lvl.getAllObjects();
 		direct = direction;
+		
 
 		distance =  0.0f;
 
@@ -31,7 +33,9 @@ public:
 
 	void update(float time)
 	{
+		
 		std::cout << "x " << x << "\n";
+		std::cout << "y " << y << "\n";
 		std::cout << "vector_direction_length " << vector_direction_length << "\n";
 		if (name == "Bullet")
 		{
@@ -47,12 +51,11 @@ public:
 			for (int i = 0; i < obj.size(); i++)
 			{
 				
-				if (getRect().intersects(obj[i].rect))
+				if (getRect().intersects(obj[i].rect) && obj[i].name == "solid")
 				{
 					life = false;
 					isAnimationDeathEnd = true;
-					break;
-
+					
 				}
 				
 			}

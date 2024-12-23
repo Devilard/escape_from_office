@@ -193,7 +193,7 @@ int main()
         {
             Entity* b = *it;
             b->update(time);
-            if ((b->life == false) && b->isAnimationDeathEnd == true)
+            if (b->life == false && b->isAnimationDeathEnd == true)
             {
                 it = entities.erase(it); delete b;
             }
@@ -220,6 +220,8 @@ int main()
                     if ((*it)->getRect().intersects((*it2)->getRect()) && (*it)->name == "EasyEnemy" && (*it2)->name == "Bullet")
                     {
                         (*it)->health = 0;
+                        (*it2)->life = false;
+                        (*it2)->isAnimationDeathEnd = true;
                         break;
                     }
                 }
