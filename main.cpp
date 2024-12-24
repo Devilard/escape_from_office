@@ -98,15 +98,28 @@ int main()
     easyEnemyImage.createMaskFromColor(sf::Color(255, 0, 0));
     //Enemy easyEnemy(easyEnemyImage, "EasyEnemy", lvl, easyEnemyObject.rect.left, easyEnemyObject.rect.top, 200, 97);
 
+    //user
+    sf::Image userImage;
+    userImage.loadFromFile("layouts/img/first_user.png");
+
     //bullet
     sf::Image bullet_image;
     bullet_image.loadFromFile("layouts/img/bullet.png");
 
 
     std::vector<Object> e = lvl.getObjectsByName("easyEnemy");
+    std::vector<Object> u = lvl.getObjectsByName("User");
 
     for (int i = 0; i < e.size(); i++)
+    {
         entities.push_back(new Enemy(easyEnemyImage, "EasyEnemy", lvl, e[i].rect.left, e[i].rect.top, 200, 97));
+    }
+
+    for (int i = 0; i < u.size(); i++)
+    {
+        entities.push_back(new Enemy(userImage, "User", lvl, u[i].rect.left, u[i].rect.top, 64, 64));
+    }
+        
 
 
     float currentFrame{ 0.0f };
@@ -275,6 +288,7 @@ int main()
         //window.draw(easyEnemy.sprite);
         for (it = entities.begin(); it != entities.end(); it++)
         {
+
             window.draw((*it)->sprite);
         }
         window.draw(p.sprite);

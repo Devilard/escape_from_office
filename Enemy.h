@@ -6,6 +6,7 @@
 class Enemy : public Entity
 {
 public:
+	float currentFrame;
 	Enemy(sf::Image &image, sf::String Name, TileMap& lvl, float X, float Y, int W, int H) : Entity(image, Name, X, Y, W, H)
 	{
 		obj = lvl.getObjectsByName("solid");
@@ -14,6 +15,13 @@ public:
 		{
 			sprite.setTextureRect(sf::IntRect(0, 0, w, h));
 			dx = 0.1;
+			currentFrame = 1.0f;
+		}
+
+		if (name == "User")
+		{
+			std::cout << "User\n";
+			sprite.setTextureRect(sf::IntRect(0, 0, w, h));
 		}
 	}
 
@@ -52,8 +60,14 @@ public:
 
 	void update(float time)
 	{
-		if (name == "EasyEnemy")
+		if (name == "EasyEnemy" || name == "User")
 		{
+			if (name == "User")
+			{
+				currentFrame += 0.005 * time;
+				if (currentFrame > 7) currentFrame -= 6;
+				sprite.setTextureRect(sf::IntRect(((64 * (int)currentFrame) + 64), 0, -64, 64));
+			}
 			checkCollisionWithMap(dx, 0);
 			x += dx * time;
 			sprite.setPosition(x + w / 2, y + h / 2);
