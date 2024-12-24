@@ -213,15 +213,15 @@ int main()
             else { it++; }
         }
 
-        for (it = entities.begin(); it != entities.end(); it++)//проходимся по эл-там списка
+        for (it = entities.begin(); it != entities.end(); it++)
         {
-            if ((*it)->getRect().intersects(p.getRect()))//если прямоугольник спрайта объекта пересекается с игроком
+            if ((*it)->getRect().intersects(p.getRect()))
             {
-                if ((*it)->name == "EasyEnemy") {//и при этом имя объекта EasyEnemy,то..
+                if ((*it)->name == "EasyEnemy") {
 
-                    if ((p.dy > 0) && (p.onGround == false)) { (*it)->dx = 0; p.dy = -0.2; (*it)->health = 0; }//если прыгнули на врага,то даем врагу скорость 0,отпрыгиваем от него чуть вверх,даем ему здоровье 0
+                    if ((p.dy > 0) && (p.onGround == false)) { (*it)->dx = 0; p.dy = -0.2; (*it)->health = 0; }
                     else {
-                        p.health -= 5;	//иначе враг подошел к нам сбоку и нанес урон
+                        p.health -= 5;	
                     }
                 }
             }

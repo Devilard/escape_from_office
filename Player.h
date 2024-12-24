@@ -44,7 +44,7 @@ public:
         }
 
         if ((Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::W)) && (onGround)) {
-            state = stateObject::jump; dy = -0.5; onGround = false;//то состо€ние равно прыжок,прыгнули и сообщили, что мы не на земле
+            state = stateObject::jump; dy = -0.5; onGround = false;
             //currentFrame += 0.005*time;
             //if (currentFrame > 3) currentFrame -= 3;
             //p.sprite.setTextureRect(IntRect(96 * int(currentFrame), 307, 96, 96));
@@ -74,12 +74,12 @@ public:
         }
 
         x += dx * time;
-        checkCollisionWithMap(dx, 0);//обрабатываем столкновение по ’
+        checkCollisionWithMap(dx, 0);
         
         y += dy * time;
-        checkCollisionWithMap(0, dy);//обрабатываем столкновение по Y
+        checkCollisionWithMap(0, dy);
         
-        sprite.setPosition(x + w / 2, y + h / 2); //задаем позицию спрайта в место его центра
+        sprite.setPosition(x + w / 2, y + h / 2); 
         if (health <= 0) { life = false; }
         dy = dy + 0.0015 * time; //делаем прит€жение к земле
         if (!isMove) { speed = 0; }
