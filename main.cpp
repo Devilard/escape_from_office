@@ -4,7 +4,6 @@
 #include <vector>
 #include <list>
 
-#include "map.h"
 #include "view.h"
 #include "Player.h"
 #include "mission.h"
