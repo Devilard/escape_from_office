@@ -11,38 +11,27 @@
 #include "level.h"
 #include "Bullet.h"
 
-
-
-
+#include "Game.h"
 
 
 int main()
 {
+    std::string str_path{ "tiled_prod/map.tmx" };
+    TileMap* lvl = new TileMap();
+    lvl->load(str_path);
+
+    Game* game = new Game();
+    game->init(lvl);
+    
     sf::RenderWindow window(sf::VideoMode(640, 480), "Escape from Office");
 
     view.reset(sf::FloatRect(0, 0, 640, 480));
 
-    std::string str_path{ "tiled_prod/map.tmx" };
-    TileMap lvl;
-    lvl.load(str_path);
+
 
     sf::Font font;
     font.loadFromFile("CyrilicOld.TTF");
     sf::Text text("", font, 20);
-
-    /////////////////////
-    //Ёксперимент
-    /////////////////////
-
-
-    sf::Image image_tower_ico;
-    image_tower_ico.loadFromFile("layouts/img/tower_1.jpg");
-
-    sf::Texture texture_tower_ico;
-    texture_tower_ico.loadFromImage(image_tower_ico);
-
-    sf::Sprite sprite_tower_ico;
-    sprite_tower_ico.setTexture(texture_tower_ico);
 
 
     /////////////////////
@@ -60,54 +49,9 @@ int main()
     sprite_quest.setScale(0.6f, 0.6f);
     bool showMissionText = true;
 
-    /////////////////////
-    //Hero
-    /////////////////////
-
-    std::list<Entity*> entities;
-    std::list<Entity*>::iterator it;
-    std::list<Entity*>::iterator it2;
-
-
-
-    Object player = lvl.getObject("Player");
- 
-
-    sf::Image hero_img;
-    hero_img.loadFromFile("layouts/img/hero.png");
-    Player p(hero_img, "Player1", lvl, player.rect.left, player.rect.top, 64.0f, 64.0f);
 
     
-
-    //enemy
-    sf::Image easyEnemyImage;
-    easyEnemyImage.loadFromFile("layouts/img/shamaich.png");
-    easyEnemyImage.createMaskFromColor(sf::Color(255, 0, 0));
-
-    //user
-    sf::Image userImage;
-    userImage.loadFromFile("layouts/img/first_user.png");
-
-    //bullet
-    sf::Image bullet_image;
-    bullet_image.loadFromFile("layouts/img/bullet.png");
-
-
-    std::vector<Object> e = lvl.getObjectsByName("easyEnemy");
-    std::vector<Object> u = lvl.getObjectsByName("User");
-
-    for (int i = 0; i < e.size(); i++)
-    {
-        entities.push_back(new Enemy(easyEnemyImage, "EasyEnemy", lvl, e[i].rect.left, e[i].rect.top, 200, 97));
-    }
-
-    for (int i = 0; i < u.size(); i++)
-    {
-        entities.push_back(new Enemy(userImage, "User", lvl, u[i].rect.left, u[i].rect.top, 64, 64));
-    }
-        
-
-
+    std::list<Entity*>::iterator it;
     float currentFrame{ 0.0f };
     sf::Clock clock;
 
@@ -122,13 +66,16 @@ int main()
 
         time = time / 800;
 
-        sf::Sprite towers[10];
-
         sf::Event event;
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
+            {
+                delete game;
+                game = nullptr;
                 window.close();
+            }
+                
 
             if (event.type == sf::Event::KeyPressed)
             {
@@ -137,6 +84,7 @@ int main()
                     switch (showMissionText) {
 
                     case true: {
+                        /*
                         std::ostringstream playerHealthString;
                         playerHealthString << p.health;
 
@@ -147,6 +95,7 @@ int main()
                         sprite_quest.setPosition(view.getCenter().x + 115, view.getCenter().y - 130);
                         showMissionText = false;
                         break;
+                        */
                     }
                     case false: {
                         text.setString("");
@@ -155,12 +104,6 @@ int main()
 
                     }
                     }
-                }
-
-                if (event.key.code == sf::Keyboard::R)
-                {
-                    for (int i = 0; i < e.size(); i++)
-                        entities.push_back(new Enemy(easyEnemyImage, "EasyEnemy", lvl, e[i].rect.left, e[i].rect.top, 200, 97));
                 }
             }
 
@@ -171,7 +114,7 @@ int main()
                     
                     std::cout << "pos_x " << pos.x  << "\n";
                     std::cout << "pos_y " << pos.y  << "\n";
-                    entities.push_back(new Bullet(bullet_image, "Bullet", lvl, p.x, p.y, 16,16, pos));
+                    //game->getEntities().push_back(new Bullet(bullet_image, "Bullet", *lvl, p.x, p.y, 16,16, pos));
                 }
             }
 
@@ -179,54 +122,24 @@ int main()
         }
 
 
-
-        p.update(time);
-
-        for (it = entities.begin(); it != entities.end();)
-        {
-            Entity* b = *it;
-            b->update(time);
-            if (b->life == false && b->isAnimationDeathEnd == true)
-            {
-                it = entities.erase(it); delete b;
-            }
-            else { it++; }
-        }
-
-        for (it = entities.begin(); it != entities.end(); it++)
-        {
-            if ((*it)->getRect().intersects(p.getRect()))
-            {
-                if ((*it)->name == "EasyEnemy") {
-
-                    if ((p.dy > 0) && (p.onGround == false)) { (*it)->dx = 0; p.dy = -0.2; (*it)->health = 0; }
-                    else {
-                        p.health -= 5;	
-                    }
-                }
-            }
-
-            for (it2 = entities.begin(); it2 != entities.end(); it2++)
-            {
-                if ((*it)->getRect() != (*it2)->getRect())
-                {
-                    if ((*it)->getRect().intersects((*it2)->getRect()) && (*it)->name == "EasyEnemy" && (*it2)->name == "Bullet")
-                    {
-                        (*it)->health = 0;
-                        (*it2)->life = false;
-                        (*it2)->isAnimationDeathEnd = true;
-                        break;
-                    }
-                }
-            }
-        }
-
+        game->update(time);
+       
         window.setView(view);
+
         viewMap(time);
         
-
         window.clear();
 
+        window.draw(game->getCurrentLevel());
+        
+        for (it = game->getEntities().begin(); it != game->getEntities().end(); it++)
+        {
+
+            window.draw((*it)->sprite);
+        }
+        window.draw(game->getPlayer().sprite);
+
+        
 
         //std::ostringstream playerScoreString;
         //playerScoreString << p.health;
@@ -245,18 +158,6 @@ int main()
 
         //window.draw(text);
 
-
-        window.draw(sprite_tower_ico);
-        sprite_tower_ico.setPosition(view.getCenter().x, view.getCenter().y + 200);
-
-        window.draw(lvl);
-        //window.draw(easyEnemy.sprite);
-        for (it = entities.begin(); it != entities.end(); it++)
-        {
-
-            window.draw((*it)->sprite);
-        }
-        window.draw(p.sprite);
         window.display();
     }
 

@@ -1,6 +1,6 @@
 #ifndef _ENEMY_H_
 #define _ENEMY_H_
-#include "map.h"
+
 #include "Entity.h"
 
 class Enemy : public Entity
