@@ -44,20 +44,6 @@ int main()
     sf::Sprite sprite_tower_ico;
     sprite_tower_ico.setTexture(texture_tower_ico);
 
-    /*
-    /////////////////////
-    //MAP
-    /////////////////////
-    sf::Image image_map;
-    image_map.loadFromFile("layouts/img/map.png");
-
-    sf::Texture texture_map;
-    texture_map.loadFromImage(image_map);
-
-    sf::Sprite sprite_map;
-    sprite_map.setTexture(texture_map);
-
-    */
 
     /////////////////////
     //Quest
@@ -72,6 +58,8 @@ int main()
     sprite_quest.setTexture(texture_quest);
     sprite_quest.setTextureRect(sf::IntRect(0, 0, 340, 510));
     sprite_quest.setScale(0.6f, 0.6f);
+    bool showMissionText = true;
+
     /////////////////////
     //Hero
     /////////////////////
@@ -83,19 +71,18 @@ int main()
 
 
     Object player = lvl.getObject("Player");
-    //Object easyEnemyObject = lvl.getObject("easyEnemy");
+ 
 
     sf::Image hero_img;
     hero_img.loadFromFile("layouts/img/hero.png");
     Player p(hero_img, "Player1", lvl, player.rect.left, player.rect.top, 64.0f, 64.0f);
 
-    bool showMissionText = true;
+    
 
     //enemy
     sf::Image easyEnemyImage;
     easyEnemyImage.loadFromFile("layouts/img/shamaich.png");
     easyEnemyImage.createMaskFromColor(sf::Color(255, 0, 0));
-    //Enemy easyEnemy(easyEnemyImage, "EasyEnemy", lvl, easyEnemyObject.rect.left, easyEnemyObject.rect.top, 200, 97);
 
     //user
     sf::Image userImage;
@@ -194,13 +181,7 @@ int main()
 
 
         p.update(time);
-        //easyEnemy.update(time);
-        /*
-        for (it = entities.begin(); it != entities.end(); it++)
-        {
-            (*it)->update(time);
-        }
-        */
+
         for (it = entities.begin(); it != entities.end();)
         {
             Entity* b = *it;
@@ -245,22 +226,7 @@ int main()
         
 
         window.clear();
-        /*
-        for (int i = 0; i < HEIGHT_MAP; i++)
-        {
-            for (int j = 0; j < WIDTH_MAP; j++)
-            {
-                if (TileMap[i][j] == ' ') { sprite_map.setTextureRect(sf::IntRect(0, 0, 32, 32)); }
-                if (TileMap[i][j] == 's') { sprite_map.setTextureRect(sf::IntRect(32, 0, 32, 32)); }
-                if (TileMap[i][j] == '0') { sprite_map.setTextureRect(sf::IntRect(64, 0, 32, 32)); }
-                if (TileMap[i][j] == 'f') { sprite_map.setTextureRect(sf::IntRect(96, 0, 32, 32)); }
-                if (TileMap[i][j] == 'h') { sprite_map.setTextureRect(sf::IntRect(128, 0, 32, 32)); }
 
-                sprite_map.setPosition(j * 32, i * 32);
-                window.draw(sprite_map);
-            }
-        }
-        */
 
         //std::ostringstream playerScoreString;
         //playerScoreString << p.health;
