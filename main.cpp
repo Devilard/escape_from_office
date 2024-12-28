@@ -19,13 +19,14 @@ int main()
     std::string str_path{ "tiled_prod/map.tmx" };
     TileMap* lvl = new TileMap();
     lvl->load(str_path);
-
+    unsigned int windowWidth{1280};
+    unsigned int windowHeight(720);
     Game* game = new Game(lvl);
     
     
-    sf::RenderWindow window(sf::VideoMode(640, 480), "Escape from Office");
+    sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Escape from Office");
 
-    game->getGameView()->view->reset(sf::FloatRect(0, 0, 640, 480));
+    game->getGameView()->view->reset(sf::FloatRect(0, 0, windowWidth, windowHeight));
 
 
     

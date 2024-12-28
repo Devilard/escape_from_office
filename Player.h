@@ -90,7 +90,6 @@ public:
         dy = dy + 0.0015f * time; //делаем притяжение к земле
         if (!isMove) { speed = 0; }
         if (health <= 0) { life = false; speed = 0; }
-        //view->getPlayerCoordinateForView(getPlayerCoordinateX(), getPlayerCoordinateY());
         
     }
 

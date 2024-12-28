@@ -2,7 +2,7 @@
 #define _VIEW_H_
 
 #include <SFML/Graphics.hpp>
-
+#include <iostream>
 
 
 class GameView
@@ -15,7 +15,16 @@ public:
 		view = new sf::View();
 	}
 
-	void update(float x, float y) { view->setCenter(x + 100, y - 100); }
+	void update(float x, float y) 
+	{
+		if (x < 540) { x = 540; }
+		if (y > 380) { y = 380; }
+
+		std::cout << "x " << x << "\n";
+		std::cout << "y " << y << "\n";
+
+		view->setCenter(x + 100, y - 100); 
+	}
 
 	sf::View viewMap(float time)
 	{
