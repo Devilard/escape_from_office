@@ -47,7 +47,7 @@ bool TileMap::load(const std::string& tmx_file_path)
 		std::cout << "Loading file " << tmx_file_path << " failed..." << std::endl;
 		return false;
 	}
-	// ѕолучаем все данные тайлсета
+	// получаем все данные тайлсета
 	tinyxml2::XMLElement* root_element = document.FirstChildElement("map");
 	const size_t tile_width = std::stoul(root_element->Attribute("tilewidth"));
 	const size_t tile_height = std::stoul(root_element->Attribute("tileheight"));
@@ -65,16 +65,16 @@ bool TileMap::load(const std::string& tmx_file_path)
 	
 	const size_t tile_count = std::stoul(tileset_root_element->Attribute("tilecount"));
 	const size_t columns = std::stoul(tileset_root_element->Attribute("columns"));
-	// ѕолучаем путь до файла
+	// получаем путь до файла
 	auto image = tileset_root_element->FirstChildElement("image");
 	std::string path = image->Attribute("source");
-	while (!isalpha(path.front())) // ≈сли путь редактор записал, например, так : "../textures/Tiles.png"
-		path.erase(0, 1);          // то убираем все лишние символы в начале строки ( ../ ), чтобы избежать сбо€ загрузки
+	while (!isalpha(path.front())) // если путь редактор записал, например, так : "../textures/Tiles.png"
+		path.erase(0, 1);          // то убираем все лишние символы в начале строки ( ../ ), чтобы избежать сбоя загрузки
 	texture = new sf::Texture();
 	if (!texture->loadFromFile(path))
 		return false;
-	// —оздаЄм сетку, где индекс каждого тайла зависит от его координат в текстуре
-	// Ќапример, если ширина тайла 32 пиксел€, координаты в текстуре : 
+	// создаём сетку, где индекс каждого тайла зависит от его координат в текстуре
+	// Например, если ширина тайла 32 пикселя, координаты в текстуре : 
 	// первого тайла (0, 0), второго (32, 0), третьего (64, 0) и так далее
 	std::vector<sf::Vector2f> texture_grid;
 	texture_grid.reserve(tile_count);
@@ -82,7 +82,7 @@ bool TileMap::load(const std::string& tmx_file_path)
 	for (size_t y = 0u; y < rows; ++y)
 		for (size_t x = 0u; x < columns; ++x)
 			texture_grid.emplace_back(sf::Vector2f((float)x * tile_width, (float)y * tile_height));
-	// ќбрабатываем csv-массивы 
+	// обрабатываем csv-массивы 
 	for (auto layer = root_element->FirstChildElement("layer");
 		layer != nullptr;
 		layer = layer->NextSiblingElement("layer"))
@@ -92,10 +92,10 @@ bool TileMap::load(const std::string& tmx_file_path)
 		std::cerr << "Bad map. No layer information found." << std::endl;
 		return false;
 		}*/
-		// Ўирина и высота сло€ в тайлах
+		// Ширина и высота слоя в тайлах
 		const size_t width = std::stoul(layer->Attribute("width"));
 		const size_t height = std::stoul(layer->Attribute("height"));
-		// ѕереводим слой в вектор целых чисел, где каждое число - номер тайла в тайлсете
+		// переводим слой в вектор целых чисел, где каждое число - номер тайла в тайлсете
 		tinyxml2::XMLElement* data = layer->FirstChildElement("data");
 		std::string dirty_string = data->GetText(), buffer;
 		std::vector<size_t> csv_array;
@@ -112,7 +112,7 @@ bool TileMap::load(const std::string& tmx_file_path)
 				}
 		}
 		csv_array.shrink_to_fit();
-		// —оздаЄм массив вершин
+		// создаём массив вершин
 		sf::VertexArray vertices;
 		vertices.setPrimitiveType(sf::Quads);
 		for (size_t y = 0u, index = 0u; y < height; ++y)
@@ -120,19 +120,19 @@ bool TileMap::load(const std::string& tmx_file_path)
 			for (size_t x = 0u; x < width; ++x, ++index)
 			{
 				size_t tile_num = csv_array[index];
-				// ≈сли номер тайла больше нул€, то есть место не пусто - записываем тайл в массив вершин
+				// если номер тайла больше нуля, то есть место не пусто - записываем тайл в массив вершин
 				if (tile_num)
-				{   // ќбходим по часовой стрелке
-					sf::Vertex leftTop;     // Ћевый верхний угол тайла
-					sf::Vertex rightTop;    // ¬ерхний правый 
-					sf::Vertex rightBottom; // Ќижний правый 
-					sf::Vertex leftBottom;  // Ќижний левый
-					// ”станавливаем тайл в позицию на карте
+				{   // обходим по часовой стрелке
+					sf::Vertex leftTop;     // Вевый верхний угол тайла
+					sf::Vertex rightTop;    // Верхний правый 
+					sf::Vertex rightBottom; // Нижний правый 
+					sf::Vertex leftBottom;  // Нижний левый
+					// Устанавливаем тайл в позицию на карте
 					leftTop.position = sf::Vector2f((float)x * tile_width, (float)y * tile_height);
 					rightTop.position = sf::Vector2f(((float)x + 1) * tile_width, (float)y * tile_height);
 					rightBottom.position = sf::Vector2f(((float)x + 1) * tile_width, (float)(y + 1) * tile_height);
 					leftBottom.position = sf::Vector2f((float)x * tile_width, (float)(y + 1) * tile_height);
-					// ќпредел€ем его текстурные координаты
+					//	определяем его текстурные координаты
 					leftTop.texCoords = sf::Vector2f(texture_grid[tile_num - 1].x, texture_grid[tile_num - 1].y);
 					rightTop.texCoords = sf::Vector2f(texture_grid[tile_num - 1].x + tile_width, texture_grid[tile_num - 1].y);
 					rightBottom.texCoords = sf::Vector2f(texture_grid[tile_num - 1].x + tile_width, texture_grid[tile_num - 1].y + tile_height);
@@ -146,11 +146,11 @@ bool TileMap::load(const std::string& tmx_file_path)
 		}
 		tile_layers.push_back(std::move(vertices));
 	}
-	// «агружаем объекты, если есть
+	// загружаем объекты, если есть
 	for (auto object_group = root_element->FirstChildElement("objectgroup");
 		object_group != nullptr;
 		object_group = object_group->NextSiblingElement("objectgroup"))
-	{// ѕолучаем все данные - тип, им€, позици€, etc
+	{// получаем все данные - тип, имя, позиция, etc
 		for (auto object = object_group->FirstChildElement("object");
 			object != nullptr;
 			object = object->NextSiblingElement("object"))
@@ -192,7 +192,7 @@ bool TileMap::load(const std::string& tmx_file_path)
 	}
 	return true;
 }
-// “олько первый объект с заданным именем
+// Только первый объект с заданным именем
 Object TileMap::getObject(const std::string& name)
 {
 	auto found = std::find_if(objects.begin(), objects.end(), [&](const Object& obj)
@@ -201,7 +201,7 @@ Object TileMap::getObject(const std::string& name)
 		});
 	return *found;
 }
-// ¬се объекты с заданным именем
+// Все объекты с заданным именем
 std::vector<Object> TileMap::getObjectsByName(const std::string& name)
 {
 	std::vector<Object> objects_by_name;
@@ -211,7 +211,7 @@ std::vector<Object> TileMap::getObjectsByName(const std::string& name)
 		});
 	return objects_by_name;
 }
-// ¬се объекты с заданным именем
+// Все объекты с заданным именем
 std::vector<Object> TileMap::getObjectsByType(const std::string& type)
 {
 	std::vector<Object> objects_by_type;
