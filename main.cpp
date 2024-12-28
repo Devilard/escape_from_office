@@ -32,6 +32,9 @@ int main()
     sf::Font font;
     font.loadFromFile("CyrilicOld.TTF");
     sf::Text text("", font, 20);
+    sf::Color redColor;
+    
+    text.setFillColor(sf::Color::Red);
 
 
     /////////////////////
@@ -84,18 +87,18 @@ int main()
                     switch (showMissionText) {
 
                     case true: {
-                        /*
+                        
                         std::ostringstream playerHealthString;
-                        playerHealthString << p.health;
+                        playerHealthString << game->getPlayer().health;
 
                         std::ostringstream task;
-                        task << getTextMission(getCurrentMisson(p.getPlayerCoordinateX()));
+                        task << getTextMission(getCurrentMisson(game->getPlayer().getPlayerCoordinateX()));
                         text.setString("Çהמנמגüו: " + playerHealthString.str() + "\n" + task.str());
                         text.setPosition(view.getCenter().x + 125, view.getCenter().y - 130);
                         sprite_quest.setPosition(view.getCenter().x + 115, view.getCenter().y - 130);
                         showMissionText = false;
                         break;
-                        */
+                        
                     }
                     case false: {
                         text.setString("");

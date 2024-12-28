@@ -119,6 +119,9 @@ private:
 
 					if ((player->dy > 0) && (player->onGround == false)) { (*it)->dx = 0; player->dy = -0.2f; (*it)->health = 0; }
 					else {
+						player->dy = -0.4f;
+						player->dx = -0.4f;
+						
 						player->health -= 5;
 					}
 				}

@@ -25,7 +25,8 @@ std::string getTextMission(int mission)
 	switch(mission)
 	{ 
 	case 0: missionText = "\nНачальный Этап и \nинструкции к игре"; break;
-	case 1: missionText = "\nMission1\nВот первая миссия"; break;
+	case 1: missionText = "\nЗадание первое\nНайти листок и ручку"; break;
+	case 2: missionText = "\nЗадание второе\nПомочь пользователю"; break;
 	}
 
 	return missionText;
