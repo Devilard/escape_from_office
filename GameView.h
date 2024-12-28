@@ -21,9 +21,6 @@ public:
 		if (x > 1820) { x = 1820; }
 		if (y > 380) { y = 380; }
 
-		std::cout << "x " << x << "\n";
-		std::cout << "y " << y << "\n";
-
 		view->setCenter(x + 100, y - 100); 
 	}
 
