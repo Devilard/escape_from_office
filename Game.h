@@ -27,7 +27,7 @@ public:
 	
 	sf::Image* userImg;
 
-	void init(TileMap* level)
+	Game(TileMap* level)
 	{
 		currentLevel = level;
 
@@ -117,7 +117,7 @@ private:
 			{
 				if ((*it)->name == "EasyEnemy") {
 
-					if ((player->dy > 0) && (player->onGround == false)) { (*it)->dx = 0; player->dy = -0.2; (*it)->health = 0; }
+					if ((player->dy > 0) && (player->onGround == false)) { (*it)->dx = 0; player->dy = -0.2f; (*it)->health = 0; }
 					else {
 						player->health -= 5;
 					}

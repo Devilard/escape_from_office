@@ -16,7 +16,7 @@ public:
 
 	Bullet(sf::Image &image, sf::String Name, TileMap& lvl, float X, float Y, int W, int H, sf::Vector2f direction) : Entity(image, Name, X, Y, W, H)
 	{
-		//obj = lvl.getObjectsByName("solid");
+		
 		obj = lvl.getAllObjects();
 		direct = direction;
 		
@@ -33,10 +33,6 @@ public:
 
 	void update(float time)
 	{
-		
-		std::cout << "x " << x << "\n";
-		std::cout << "y " << y << "\n";
-		std::cout << "vector_direction_length " << vector_direction_length << "\n";
 		if (name == "Bullet")
 		{
 			

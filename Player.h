@@ -5,6 +5,8 @@
 #include <SFML/Graphics.hpp>
 #include "Entity.h"
 #include "level.h"
+#include "Bullet.h"
+
 
 using sf::Keyboard;
 
@@ -30,15 +32,15 @@ public:
         
         if (Keyboard::isKeyPressed(Keyboard::Left) || Keyboard::isKeyPressed(Keyboard::A)) {
             state = stateObject::left;
-            speed = 0.1;
-            currentFrame += 0.005 * time;
+            speed = 0.1f;
+            currentFrame += 0.005f * time;
             if (currentFrame > 5) currentFrame -= 4;
             sprite.setTextureRect(sf::IntRect(((64 * (int)currentFrame)+64) , 0, -64, 64));
         }
         if (Keyboard::isKeyPressed(Keyboard::Right) || Keyboard::isKeyPressed(Keyboard::D)) {
             state = stateObject::right;
-            speed = 0.1;
-            	currentFrame += 0.005 * time;
+            speed = 0.1f;
+            	currentFrame += 0.005f * time;
             	if (currentFrame > 5) currentFrame -= 4;
             	sprite.setTextureRect(sf::IntRect((64 * (int)currentFrame), 0, 64, 64));
         }
@@ -81,7 +83,7 @@ public:
         
         sprite.setPosition(x + w / 2, y + h / 2); 
         if (health <= 0) { life = false; }
-        dy = dy + 0.0015 * time; //делаем притяжение к земле
+        dy = dy + 0.0015f * time; //делаем притяжение к земле
         if (!isMove) { speed = 0; }
         if (health <= 0) { life = false; speed = 0; }
         getPlayerCoordinateForView(getPlayerCoordinateX(), getPlayerCoordinateY());
@@ -171,8 +173,13 @@ public:
         }
     }
 
-
-
+    
+    void shoot(std::list<Entity*>& entities, sf::Vector2f pos, sf::Image* bulletImg, TileMap* currentLevel)
+    {
+        
+        entities.push_back(new Bullet(*bulletImg, "Bullet", *currentLevel, x, y, 16, 16, pos));
+    }
+    
 };
 
 #endif

@@ -14,7 +14,7 @@ public:
 		if (name == "EasyEnemy")
 		{
 			sprite.setTextureRect(sf::IntRect(0, 0, w, h));
-			dx = 0.1;
+			dx = 0.1f;
 			currentFrame = 1.0f;
 		}
 
@@ -51,8 +51,8 @@ public:
 				{
 					if (Dy > 0) { y = obj[i].rect.top - h;  dy = 0; onGround = true; }
 					if (Dy < 0) { y = obj[i].rect.top + obj[i].rect.height;   dy = 0; }
-					if (Dx > 0) { x = obj[i].rect.left - w;  dx = -0.1; sprite.scale(-1, 1); }
-					if (Dx < 0) { x = obj[i].rect.left + obj[i].rect.width; dx = 0.1; sprite.scale(-1, 1); }
+					if (Dx > 0) { x = obj[i].rect.left - w;  dx = -0.1f; sprite.scale(-1, 1); }
+					if (Dx < 0) { x = obj[i].rect.left + obj[i].rect.width; dx = 0.1f; sprite.scale(-1, 1); }
 				}
 			}
 		}
@@ -64,7 +64,7 @@ public:
 		{
 			if (name == "User")
 			{
-				currentFrame += 0.005 * time;
+				currentFrame += 0.005f * time;
 				if (currentFrame > 7) currentFrame -= 6;
 				sprite.setTextureRect(sf::IntRect(((64 * (int)currentFrame) + 64), 0, -64, 64));
 			}

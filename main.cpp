@@ -20,8 +20,8 @@ int main()
     TileMap* lvl = new TileMap();
     lvl->load(str_path);
 
-    Game* game = new Game();
-    game->init(lvl);
+    Game* game = new Game(lvl);
+    
     
     sf::RenderWindow window(sf::VideoMode(640, 480), "Escape from Office");
 
@@ -111,10 +111,8 @@ int main()
             {
                 if (event.key.code == sf::Mouse::Left)
                 {
-                    
-                    std::cout << "pos_x " << pos.x  << "\n";
-                    std::cout << "pos_y " << pos.y  << "\n";
-                    //game->getEntities().push_back(new Bullet(bullet_image, "Bullet", *lvl, p.x, p.y, 16,16, pos));
+
+                    game->getPlayer().shoot(game->getEntities(), pos, game->bulletImg, game->currentLevel);
                 }
             }
 
