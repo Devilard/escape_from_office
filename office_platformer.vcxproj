@@ -158,9 +158,9 @@
     <ClInclude Include="level.h" />
     <ClInclude Include="libs\tinyxml2\tinyxml2.h" />
     <ClInclude Include="map.h" />
-    <ClInclude Include="mission.h" />
+    <ClInclude Include="Mission.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="view.h" />
+    <ClInclude Include="GameView.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

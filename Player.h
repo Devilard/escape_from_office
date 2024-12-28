@@ -6,6 +6,7 @@
 #include "Entity.h"
 #include "level.h"
 #include "Bullet.h"
+#include "GameView.h"
 
 
 using sf::Keyboard;
@@ -17,9 +18,12 @@ public:
     stateObject state;
     int playerScore;
     float currentFrame{ 1.0f };
+   
 
     Player(sf::Image& image, sf::String Name, TileMap& lev, float X, float Y, int W, int H) : Entity(image, Name, X, Y, W, H)
     {
+        
+        
         playerScore = 0; state = stateObject::stay; obj = lev.getAllObjects();
         if (name == "Player1")
         {
@@ -86,7 +90,8 @@ public:
         dy = dy + 0.0015f * time; //делаем притяжение к земле
         if (!isMove) { speed = 0; }
         if (health <= 0) { life = false; speed = 0; }
-        getPlayerCoordinateForView(getPlayerCoordinateX(), getPlayerCoordinateY());
+        //view->getPlayerCoordinateForView(getPlayerCoordinateX(), getPlayerCoordinateY());
+        
     }
 
     float getPlayerCoordinateX() { return x; }
