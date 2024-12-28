@@ -6,11 +6,14 @@
 #include "level.h"
 #include "Entity.h"
 #include "Enemy.h"
+#include "Mission.h"
+#include "GameView.h"
 
 class Game
 {
 	
 public:
+	GameView* view;
 	TileMap* currentLevel;
 
 	std::list<Entity*> entities;
@@ -27,8 +30,42 @@ public:
 	
 	sf::Image* userImg;
 
-	void init(TileMap* level)
+	sf::Font* font;
+	sf::Text* missionText;
+
+	sf::Image* missionBgImg;
+	sf::Texture* missionTexture;
+	sf::Sprite* missionSprite;
+
+	bool isShowMission;
+
+	Mission* mission;
+
+	Game(TileMap* level)
 	{
+		view = new GameView();
+
+		font = new sf::Font();
+		font->loadFromFile("CyrilicOld.TTF");
+
+		missionText = new sf::Text("", *font, 20);
+		sf::Color redColor;
+		missionText->setFillColor(sf::Color::Red);
+
+		missionBgImg = new sf::Image;
+		missionBgImg->loadFromFile("layouts/img/missionbg.jpg");
+		missionBgImg->createMaskFromColor(sf::Color(0, 0, 0));
+		missionTexture = new sf::Texture();
+		missionTexture->loadFromImage(*missionBgImg);
+		missionSprite = new sf::Sprite();
+		missionSprite->setTexture(*missionTexture);
+		missionSprite->setTextureRect(sf::IntRect(0, 0, 340, 510));
+		missionSprite->setScale(0.5f, 0.5f);
+
+		isShowMission = true;
+
+		mission = new Mission();
+
 		currentLevel = level;
 
 		//init player
@@ -66,33 +103,43 @@ public:
 		}
 	}
 
-	TileMap& getCurrentLevel()
+
+
+	TileMap& getCurrentLevel() { return *currentLevel; }
+	Object& getPlayerObject() { return *PlayerObject; }
+	std::list<Entity*>& getEntities() { return entities; }
+	Player& getPlayer() { return *player; }
+
+	GameView* getGameView()
 	{
-		return *currentLevel;
+		return view;
 	}
 
-	Object& getPlayerObject()
+	void showMission()
 	{
-		return *PlayerObject;
+		std::ostringstream playerHealthString;
+		playerHealthString << getPlayer().health;
+		std::ostringstream missionTextString;
+		missionTextString << mission->getTextMission(mission->getCurrentMisson(getPlayer().getPlayerCoordinateX()));
+		missionText->setString("Çהמנמגüו: " + playerHealthString.str() + "\n" + missionTextString.str());
+		missionSprite->setPosition(getGameView()->view->getCenter().x + 115, getGameView()->view->getCenter().y - 130);
+		isShowMission = false;
 	}
 
-	std::list<Entity*>& getEntities()
+	void hideMission()
 	{
-		return entities;
+		missionText->setString("");
+		isShowMission = true;
 	}
 
 	void update(float time)
 	{
-
 		player->update(time);
 		entitiesUpdate(time);
-
+		getGameView()->update(player->x, player->y);
 	}
 
-	Player& getPlayer()
-	{
-		return *player;
-	}
+	
 
 private:
 
@@ -117,8 +164,11 @@ private:
 			{
 				if ((*it)->name == "EasyEnemy") {
 
-					if ((player->dy > 0) && (player->onGround == false)) { (*it)->dx = 0; player->dy = -0.2; (*it)->health = 0; }
+					if ((player->dy > 0) && (player->onGround == false)) { (*it)->dx = 0; player->dy = -0.2f; (*it)->health = 0; }
 					else {
+						player->dy = -0.4f;
+						player->dx = -0.4f;
+						
 						player->health -= 5;
 					}
 				}

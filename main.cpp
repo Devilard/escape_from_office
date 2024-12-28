@@ -4,7 +4,7 @@
 #include <vector>
 #include <list>
 
-#include "view.h"
+#include "GameView.h"
 #include "Player.h"
 #include "mission.h"
 #include "Enemy.h"
@@ -19,35 +19,14 @@ int main()
     std::string str_path{ "tiled_prod/map.tmx" };
     TileMap* lvl = new TileMap();
     lvl->load(str_path);
-
-    Game* game = new Game();
-    game->init(lvl);
+    unsigned int windowWidth{1280};
+    unsigned int windowHeight(720);
+    Game* game = new Game(lvl);
     
-    sf::RenderWindow window(sf::VideoMode(640, 480), "Escape from Office");
+    
+    sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Escape from Office");
 
-    view.reset(sf::FloatRect(0, 0, 640, 480));
-
-
-
-    sf::Font font;
-    font.loadFromFile("CyrilicOld.TTF");
-    sf::Text text("", font, 20);
-
-
-    /////////////////////
-    //Quest
-    /////////////////////
-    sf::Image image_quest;
-    image_quest.loadFromFile("layouts/img/missionbg.jpg");
-    image_quest.createMaskFromColor(sf::Color(0, 0, 0));
-
-    sf::Texture texture_quest;
-    texture_quest.loadFromImage(image_quest);
-    sf::Sprite sprite_quest;
-    sprite_quest.setTexture(texture_quest);
-    sprite_quest.setTextureRect(sf::IntRect(0, 0, 340, 510));
-    sprite_quest.setScale(0.6f, 0.6f);
-    bool showMissionText = true;
+    game->getGameView()->view->reset(sf::FloatRect(0, 0, windowWidth, windowHeight));
 
 
     
@@ -81,27 +60,16 @@ int main()
             {
                 if (event.key.code == sf::Keyboard::Tab)
                 {
-                    switch (showMissionText) {
+                    switch (game->isShowMission) {
 
                     case true: {
-                        /*
-                        std::ostringstream playerHealthString;
-                        playerHealthString << p.health;
-
-                        std::ostringstream task;
-                        task << getTextMission(getCurrentMisson(p.getPlayerCoordinateX()));
-                        text.setString("Здоровье: " + playerHealthString.str() + "\n" + task.str());
-                        text.setPosition(view.getCenter().x + 125, view.getCenter().y - 130);
-                        sprite_quest.setPosition(view.getCenter().x + 115, view.getCenter().y - 130);
-                        showMissionText = false;
+                        game->showMission();
                         break;
-                        */
+                        
                     }
                     case false: {
-                        text.setString("");
-                        showMissionText = true;
+                        game->hideMission();
                         break;
-
                     }
                     }
                 }
@@ -111,52 +79,44 @@ int main()
             {
                 if (event.key.code == sf::Mouse::Left)
                 {
-                    
-                    std::cout << "pos_x " << pos.x  << "\n";
-                    std::cout << "pos_y " << pos.y  << "\n";
-                    //game->getEntities().push_back(new Bullet(bullet_image, "Bullet", *lvl, p.x, p.y, 16,16, pos));
+
+                    game->getPlayer().shoot(game->getEntities(), pos, game->bulletImg, game->currentLevel);
                 }
             }
 
 
         }
 
-
+        
         game->update(time);
-       
-        window.setView(view);
-
-        viewMap(time);
+        window.setView(*(game->getGameView()->view));
         
+
+        game->getGameView()->viewMap(time);
         window.clear();
-
         window.draw(game->getCurrentLevel());
-        
-        for (it = game->getEntities().begin(); it != game->getEntities().end(); it++)
-        {
-
-            window.draw((*it)->sprite);
-        }
+        for (it = game->getEntities().begin(); it != game->getEntities().end(); it++) { window.draw((*it)->sprite); }
         window.draw(game->getPlayer().sprite);
 
         
+        /*
+        std::ostringstream playerScoreString;
+        playerScoreString << p.health;
 
-        //std::ostringstream playerScoreString;
-        //playerScoreString << p.health;
+        text.setString("Собранно камней " + playerScoreString.str());
+        text.setPosition(view.getCenter().x - 200, view.getCenter().y - 200);
+        */
 
-
-        //text.setString("Собранно камней " + playerScoreString.str());
-        //text.setPosition(view.getCenter().x - 200, view.getCenter().y - 200);
-
-        if (!showMissionText)
+        if (!game->isShowMission)
         {
-            window.draw(sprite_quest);
-            window.draw(text);
-            text.setPosition(view.getCenter().x + 125, view.getCenter().y - 130);
-            sprite_quest.setPosition(view.getCenter().x + 115, view.getCenter().y - 130);
+            window.draw(*game->missionSprite);
+            window.draw(*game->missionText);
+            game->missionText->setPosition(game->getGameView()->view->getCenter().x + 125, game->getGameView()->view->getCenter().y - 130);
+            game->missionSprite->setPosition(game->getGameView()->view->getCenter().x + 115, game->getGameView()->view->getCenter().y - 130);
+            
         }
 
-        //window.draw(text);
+        
 
         window.display();
     }
