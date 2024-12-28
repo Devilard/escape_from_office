@@ -18,6 +18,7 @@ public:
 	void update(float x, float y) 
 	{
 		if (x < 540) { x = 540; }
+		if (x > 1820) { x = 1820; }
 		if (y > 380) { y = 380; }
 
 		std::cout << "x " << x << "\n";
