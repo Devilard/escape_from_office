@@ -1,13 +1,20 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
+#include <string>
+#include <sstream>
+#include <vector>
+#include <list>
+
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #include "level.h"
 #include "Entity.h"
 #include "Enemy.h"
 #include "Mission.h"
 #include "GameView.h"
+#include "Player.h"
 
 class Game
 {
@@ -15,6 +22,7 @@ class Game
 public:
 	GameView* view;
 	TileMap* currentLevel;
+	sf::Music* music;
 
 	std::list<Entity*> entities;
 
@@ -44,6 +52,12 @@ public:
 	Game(TileMap* level)
 	{
 		view = new GameView();
+
+		music = new sf::Music();
+		music->openFromFile("sound/background_music.wav");
+		music->setVolume(15.0f);
+		music->play();
+		music->setLoop(true);
 
 		font = new sf::Font();
 		font->loadFromFile("CyrilicOld.TTF");
@@ -139,6 +153,109 @@ public:
 		getGameView()->update(player->x, player->y);
 	}
 
+	void Loop(sf::RenderWindow& window, unsigned int windowWidth, unsigned int windowHeight)
+	{
+		getGameView()->view->reset(sf::FloatRect(0, 0, windowWidth, windowHeight));
+		std::list<Entity*>::iterator it;
+		float currentFrame{ 0.0f };
+		sf::Clock clock;
+
+
+		while (window.isOpen())
+		{
+			float time = static_cast<float>(clock.getElapsedTime().asMicroseconds());
+			clock.restart();
+
+			sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+			sf::Vector2f pos = window.mapPixelToCoords(pixelPos);
+
+
+			time = time / 800;
+
+			pollEvent(window, pos);
+
+
+			update(time);
+			window.setView(*(getGameView()->view));
+
+
+			getGameView()->viewMap(time);
+
+			render(window, it);
+
+		}
+
+	}
+
+	void pollEvent(sf::RenderWindow& window, sf::Vector2f pos)
+	{
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+			{
+				window.close();
+			}
+
+
+			if (event.type == sf::Event::KeyPressed)
+			{
+				if (event.key.code == sf::Keyboard::Tab)
+				{
+					switch (isShowMission) {
+
+					case true: {
+						showMission();
+						break;
+
+					}
+					case false: {
+						hideMission();
+						break;
+					}
+					}
+				}
+			}
+
+			if (event.type == sf::Event::MouseButtonPressed)
+			{
+				if (event.key.code == sf::Mouse::Left)
+				{
+
+					getPlayer().shoot(getEntities(), pos, bulletImg, currentLevel);
+				}
+			}
+
+
+		}
+	}
+
+	void render(sf::RenderWindow& window, std::list<Entity*>::iterator& it)
+	{
+		window.clear();
+		window.draw(getCurrentLevel());
+		for (it = getEntities().begin(); it != getEntities().end(); it++) { window.draw((*it)->sprite); }
+		window.draw(getPlayer().sprite);
+
+		/*
+		std::ostringstream playerScoreString;
+		playerScoreString << p.health;
+
+		text.setString("Собранно камней " + playerScoreString.str());
+		text.setPosition(view.getCenter().x - 200, view.getCenter().y - 200);
+		*/
+
+		if (!isShowMission)
+		{
+			window.draw(*missionSprite);
+			window.draw(*missionText);
+			missionText->setPosition(getGameView()->view->getCenter().x + 125, getGameView()->view->getCenter().y - 130);
+			missionSprite->setPosition(getGameView()->view->getCenter().x + 115, getGameView()->view->getCenter().y - 130);
+
+		}
+
+		window.display();
+	}
 	
 
 private:
