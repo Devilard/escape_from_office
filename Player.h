@@ -76,6 +76,7 @@ public:
 
     void update(float time)
     {
+        std::cout << "y " << y << "\n";
         control(time);
         
         switch (state)

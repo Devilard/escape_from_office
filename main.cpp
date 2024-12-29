@@ -31,7 +31,7 @@ int main()
     music.openFromFile("sound/background_music.wav");//загружаем файл
     music.setVolume(15.0f);
     music.play();//воспроизводим музыку
-    
+    music.setLoop(true);
     
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Escape from Office");
 
