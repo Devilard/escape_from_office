@@ -18,6 +18,13 @@ public:
     stateObject state;
     int playerScore;
     float currentFrame{ 1.0f };
+    sf::SoundBuffer buffer;
+    
+
+
+    sf::Sound sound;
+   
+    
    
 
     Player(sf::Image& image, sf::String Name, TileMap& lev, float X, float Y, int W, int H) : Entity(image, Name, X, Y, W, H)
@@ -29,6 +36,8 @@ public:
         {
             sprite.setTextureRect(sf::IntRect(64, 0, w, h));
         }
+        buffer.loadFromFile("sound/otskok-myacha.ogg");
+        sound.setBuffer(buffer);
     }
 
 
@@ -180,7 +189,7 @@ public:
     
     void shoot(std::list<Entity*>& entities, sf::Vector2f pos, sf::Image* bulletImg, TileMap* currentLevel)
     {
-        
+        sound.play();
         entities.push_back(new Bullet(*bulletImg, "Bullet", *currentLevel, x, y, 16, 16, pos));
     }
     

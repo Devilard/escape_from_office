@@ -1,4 +1,6 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+
 #include <string>
 #include <sstream>
 #include <vector>
@@ -22,6 +24,13 @@ int main()
     unsigned int windowWidth{1280};
     unsigned int windowHeight(720);
     Game* game = new Game(lvl);
+
+
+    
+    sf::Music music;//создаем объект музыки
+    music.openFromFile("sound/background_music.wav");//загружаем файл
+    music.setVolume(15.0f);
+    music.play();//воспроизводим музыку
     
     
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Escape from Office");
