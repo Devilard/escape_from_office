@@ -58,7 +58,7 @@ public:
             	sprite.setTextureRect(sf::IntRect((64 * (int)currentFrame), 0, 64, 64));
         }
 
-        if ((Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::W)) && (onGround)) {
+        if ((Keyboard::isKeyPressed(Keyboard::Space)) && (onGround)) {
             state = stateObject::jump; dy = -0.5; onGround = false;
             //currentFrame += 0.005*time;
             //if (currentFrame > 3) currentFrame -= 3;

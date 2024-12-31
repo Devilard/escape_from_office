@@ -26,22 +26,22 @@ public:
 
 	sf::View viewMap(float time)
 	{
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		{
 			view->move(0.1 * time, 0);
 		}
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
 			view->move(0, 0.1 * time);
 		}
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		{
 			view->move(-0.1 * time, 0);
 		}
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
 			view->move(0, -0.1 * time);
 		}

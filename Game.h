@@ -49,58 +49,68 @@ public:
 
 	Mission* mission;
 
-	Game(TileMap* level)
+	Game()
 	{
 		view = new GameView();
-
 		music = new sf::Music();
+		font = new sf::Font();
+		missionText = new sf::Text();
+		missionBgImg = new sf::Image;
+		missionTexture = new sf::Texture();
+		missionSprite = new sf::Sprite();
+		mission = new Mission();
+		currentLevel = new TileMap();
+		heroImg = new sf::Image;
+		bulletImg = new sf::Image();
+		easyEnemyImg = new sf::Image;
+		userImg = new sf::Image;
+		isShowMission = true;
+	}
+
+	void loadAll()
+	{
+		//Load Music and start play
 		music->openFromFile("sound/background_music.wav");
 		music->setVolume(15.0f);
 		music->play();
 		music->setLoop(true);
 
-		font = new sf::Font();
+		//Load font
 		font->loadFromFile("CyrilicOld.TTF");
 
-		missionText = new sf::Text("", *font, 20);
+		//Set the initial value for the text
+		missionText->setString("");
+		missionText->setCharacterSize(20);
+		missionText->setFont(*font);
 		sf::Color redColor;
 		missionText->setFillColor(sf::Color::Red);
 
-		missionBgImg = new sf::Image;
+		//Load mission background image, texture, sprite
 		missionBgImg->loadFromFile("layouts/img/missionbg.jpg");
 		missionBgImg->createMaskFromColor(sf::Color(0, 0, 0));
-		missionTexture = new sf::Texture();
 		missionTexture->loadFromImage(*missionBgImg);
-		missionSprite = new sf::Sprite();
 		missionSprite->setTexture(*missionTexture);
 		missionSprite->setTextureRect(sf::IntRect(0, 0, 340, 510));
 		missionSprite->setScale(0.5f, 0.5f);
 
-		isShowMission = true;
 
-		mission = new Mission();
+		std::string str_path{ "tiled_prod/map.tmx" };
+		currentLevel->load(str_path);
 
-		currentLevel = level;
-
-		//init player
-		heroImg = new sf::Image;
+		//Load hero
 		heroImg->loadFromFile("layouts/img/hero.png");
-		
-		PlayerObject = new Object(level->getObject("Player"));
-		
-		
+		PlayerObject = new Object(currentLevel->getObject("Player"));
 		player = new Player(*heroImg, "Player1", *currentLevel, getPlayerObject().rect.left, getPlayerObject().rect.top, 64.0f, 64.0f);
-		
 
-		bulletImg = new sf::Image();
+		//Load bullet
 		bulletImg->loadFromFile("layouts/img/bullet.png");
 
-		easyEnemyImg = new sf::Image;
+		//Load user
+		userImg->loadFromFile("layouts/img/first_user.png");
+
+		//Load enemy
 		easyEnemyImg->loadFromFile("layouts/img/shamaich.png");
 		easyEnemyImg->createMaskFromColor(sf::Color(255, 0, 0));
-
-		userImg = new sf::Image;
-		userImg->loadFromFile("layouts/img/first_user.png");
 
 		enemies = currentLevel->getObjectsByName("easyEnemy");
 		users = currentLevel->getObjectsByName("User");
@@ -145,6 +155,8 @@ public:
 		missionText->setString("");
 		isShowMission = true;
 	}
+
+
 
 	void update(float time)
 	{
