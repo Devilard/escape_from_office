@@ -98,9 +98,9 @@ public:
 		currentLevel->load(str_path);
 
 		//Load hero
-		heroImg->loadFromFile("layouts/img/hero.png");
+		heroImg->loadFromFile("layouts/img/office_man.png");
 		PlayerObject = new Object(currentLevel->getObject("Player"));
-		player = new Player(*heroImg, "Player1", *currentLevel, getPlayerObject().rect.left, getPlayerObject().rect.top, 64.0f, 64.0f);
+		player = new Player(*heroImg, "Player1", *currentLevel, getPlayerObject().rect.left, getPlayerObject().rect.top, 36.0f, 75.0f);
 
 		//Load bullet
 		bulletImg->loadFromFile("layouts/img/bullet.png");

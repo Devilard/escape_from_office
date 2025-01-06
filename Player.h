@@ -34,7 +34,7 @@ public:
         playerScore = 0; state = stateObject::stay; obj = lev.getAllObjects();
         if (name == "Player1")
         {
-            sprite.setTextureRect(sf::IntRect(64, 0, w, h));
+            sprite.setTextureRect(sf::IntRect(0, 0, w, h));
         }
         buffer.loadFromFile("sound/otskok-myacha.ogg");
         sound.setBuffer(buffer);
@@ -47,15 +47,15 @@ public:
             state = stateObject::left;
             speed = 0.1f;
             currentFrame += 0.005f * time;
-            if (currentFrame > 5) currentFrame -= 4;
-            sprite.setTextureRect(sf::IntRect(((64 * (int)currentFrame)+64) , 0, -64, 64));
+            if (currentFrame > 4) currentFrame -= 3;
+            sprite.setTextureRect(sf::IntRect(((36 * (int)currentFrame)) , 0, -36, 74));
         }
         if (Keyboard::isKeyPressed(Keyboard::Right) || Keyboard::isKeyPressed(Keyboard::D)) {
             state = stateObject::right;
             speed = 0.1f;
             	currentFrame += 0.005f * time;
-            	if (currentFrame > 5) currentFrame -= 4;
-            	sprite.setTextureRect(sf::IntRect((64 * (int)currentFrame), 0, 64, 64));
+            	if (currentFrame > 4) currentFrame -= 3;
+            	sprite.setTextureRect(sf::IntRect((36 * (int)currentFrame), 0, 36, 74));
         }
 
         if ((Keyboard::isKeyPressed(Keyboard::Space)) && (onGround)) {
