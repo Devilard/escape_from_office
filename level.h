@@ -9,6 +9,7 @@ class Object
 public:
 	Object(float x, float y, float width, float height) : rect(x, y, width, height)
 	{
+		
 	}
 	int         GetPropertyInt(const std::string& name);
 	float       GetPropertyFloat(const std::string& name);
@@ -17,6 +18,7 @@ public:
 	std::string type;
 	std::map<std::string, std::string> properties;
 	sf::FloatRect rect;
+	int id;
 };
 
 class TileMap : public sf::Drawable
@@ -28,6 +30,7 @@ public:
 	std::vector<Object>  getObjectsByName(const std::string& name);
 	std::vector<Object>  getObjectsByType(const std::string& type);
 	std::vector<Object>& getAllObjects();
+	Object				 getObjectById(const int id);
 private:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	sf::Texture* texture;
@@ -78,7 +81,7 @@ bool TileMap::load(const std::string& tmx_file_path)
 	// первого тайла (0, 0), второго (32, 0), третьего (64, 0) и так далее
 	std::vector<sf::Vector2f> texture_grid;
 	texture_grid.reserve(tile_count);
-	size_t rows = tile_count / columns;
+	size_t rows = tile_count / columns; //64 / 8 = 8
 	for (size_t y = 0u; y < rows; ++y)
 		for (size_t x = 0u; x < columns; ++x)
 			texture_grid.emplace_back(sf::Vector2f((float)x * tile_width, (float)y * tile_height));
@@ -115,9 +118,9 @@ bool TileMap::load(const std::string& tmx_file_path)
 		// создаём массив вершин
 		sf::VertexArray vertices;
 		vertices.setPrimitiveType(sf::Quads);
-		for (size_t y = 0u, index = 0u; y < height; ++y)
+		for (size_t y = 0u, index = 0u; y < height; ++y) //height 60
 		{
-			for (size_t x = 0u; x < width; ++x, ++index)
+			for (size_t x = 0u; x < width; ++x, ++index) //width 80
 			{
 				size_t tile_num = csv_array[index];
 				// если номер тайла больше нуля, то есть место не пусто - записываем тайл в массив вершин
@@ -163,6 +166,7 @@ bool TileMap::load(const std::string& tmx_file_path)
 				object_type = object->Attribute("type");
 			float x = std::stof(object->Attribute("x"));
 			float y = std::stof(object->Attribute("y"));
+			int object_id = std::stoi(object->Attribute("id"));
 			float width{}, height{};
 			if (object->Attribute("width") && object->Attribute("height"))
 			{
@@ -172,6 +176,7 @@ bool TileMap::load(const std::string& tmx_file_path)
 			Object new_object(x, y, width, height);
 			new_object.name = object_name;
 			new_object.type = object_type;
+			new_object.id = object_id;
 			auto properties = object->FirstChildElement("properties");
 			if (properties)
 			{
@@ -220,6 +225,16 @@ std::vector<Object> TileMap::getObjectsByType(const std::string& type)
 			return obj.type == type;
 		});
 	return objects_by_type;
+}
+
+Object TileMap::getObjectById(const int id)
+{
+	auto found = std::find_if(objects.begin(), objects.end(), [&](const Object& obj)
+		{
+			return obj.id == id;
+		});
+	return *found;
+
 }
 std::vector<Object>& TileMap::getAllObjects()
 {

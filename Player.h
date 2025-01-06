@@ -19,19 +19,17 @@ public:
     int playerScore;
     float currentFrame{ 1.0f };
     sf::SoundBuffer buffer;
-    
-
-
     sf::Sound sound;
-   
-    
-   
-
+    std::vector<Object> action_objects;
+    bool isActionKeyPressed;
+    TileMap levelCopy;
     Player(sf::Image& image, sf::String Name, TileMap& lev, float X, float Y, int W, int H) : Entity(image, Name, X, Y, W, H)
     {
         
-        
+        isActionKeyPressed = true;
+        levelCopy = lev;
         playerScore = 0; state = stateObject::stay; obj = lev.getAllObjects();
+        action_objects = lev.getObjectsByType("door");
         if (name == "Player1")
         {
             sprite.setTextureRect(sf::IntRect(0, 0, w, h));
@@ -60,23 +58,19 @@ public:
 
         if ((Keyboard::isKeyPressed(Keyboard::Space)) && (onGround)) {
             state = stateObject::jump; dy = -0.5; onGround = false;
-            //currentFrame += 0.005*time;
-            //if (currentFrame > 3) currentFrame -= 3;
-            //p.sprite.setTextureRect(IntRect(96 * int(currentFrame), 307, 96, 96));
+
         }
 
         if (Keyboard::isKeyPressed(Keyboard::Down) || Keyboard::isKeyPressed(Keyboard::S)) {
             state = stateObject::down;
-
-            //currentFrame += 0.005*time;
-            //if (currentFrame > 3) currentFrame -= 3;
-            //p.sprite.setTextureRect(IntRect(96 * int(currentFrame), 0, 96, 96));
+             
         }
+
+
     }
 
     void update(float time)
     {
-        std::cout << "y " << y << "\n";
         control(time);
         
         switch (state)
@@ -107,70 +101,9 @@ public:
 
     float getPlayerCoordinateY() { return y; }
 
-    /*
-    void interactionWithMap()
-    {
-        for (int i = y / 32; i < (y + h) / 32; i++)
-        {
-            for (int j = x / 32; j < (x + w) / 32; j++)
-            {
-                if (TileMap[i][j] == '0')
-                {
-                    if (dy > 0) { y = i * 32 - h; }
-
-                    if (dy < 0) { y = i * 32 + 32; }
-
-                    if (dx > 0) { x = j * 32 - w; }
-
-                    if (dx < 0) { x = j * 32 + 32; }
-
-                }
-
-                if (TileMap[i][j] == 's')
-                {
-                    player_score++;
-                    TileMap[i][j] = ' ';
-                }
-
-                if (TileMap[i][j] == 'f')
-                {
-                    health -= 40;
-                    TileMap[i][j] = ' ';
-                }
-
-                if (TileMap[i][j] == 'h')
-                {
-                    health += 20;
-                    TileMap[i][j] = ' ';
-                }
-
-            }
-        }
-    }
-    */
 
     void checkCollisionWithMap(float Dx, float Dy)
     {
-        /*
-        for (int i = y / 32; i < (y + h) / 32; i++)
-        {
-            
-            for (int j = x / 32; j < (x + w) / 32; j++)
-            {
-                
-                if (TileMap[i][j] == '0')
-                {
-                    
-                    if (Dy > 0) { y = i * 32 - h;  dy = 0; onGround = true; }//по Y вниз=>идем в пол(стоим на месте) или падаем. В этот момент надо вытолкнуть персонажа и поставить его на землю, при этом говорим что мы на земле тем самым снова можем прыгать
-                    if (Dy < 0) { y = i * 32 + 32;  dy = 0; }//столкновение с верхними краями карты(может и не пригодиться)
-                    if (Dx > 0) { x = j * 32 - w; }//с правым краем карты
-                    if (Dx < 0) { x = j * 32 + 32; }// с левым краем карты
-                }
-                else {  onGround = false; }
-            }
-        }
-
-        */
         
         for (int i = 0; i < obj.size(); i++)
         {
@@ -192,6 +125,30 @@ public:
     {
         sound.play();
         entities.push_back(new Bullet(*bulletImg, "Bullet", *currentLevel, x, y, 16, 16, pos));
+    }
+
+    void action()
+    {
+        std::vector<Object>::iterator it;
+        for (it = action_objects.begin(); it != action_objects.end(); it++)
+        {
+            
+            if (getRect().intersects(it->rect))
+            {
+                if (it->GetPropertyString("to") != "")
+                {
+                    Object To = levelCopy.getObjectById(std::stoi(it->GetPropertyString("to")));
+
+                    y = To.rect.top;
+                    x = To.rect.left;
+
+                    break;
+                }
+
+                
+
+            }
+        }
     }
     
 };

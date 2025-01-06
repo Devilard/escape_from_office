@@ -35,6 +35,7 @@ public:
 	sf::Image* easyEnemyImg;
 	std::vector<Object> enemies;
 	std::vector<Object> users;
+	std::vector<Object> doors;
 	
 	sf::Image* userImg;
 
@@ -114,6 +115,7 @@ public:
 
 		enemies = currentLevel->getObjectsByName("easyEnemy");
 		users = currentLevel->getObjectsByName("User");
+		doors = currentLevel->getObjectsByType("door");
 
 		//Filling the enemy list
 		for (int i = 0; i < enemies.size(); i++)
@@ -226,6 +228,15 @@ public:
 						break;
 					}
 					}
+				}
+
+				if (event.key.code == sf::Keyboard::E)
+				{
+					if (player->isActionKeyPressed)
+					{
+						player->action();
+					}
+					
 				}
 			}
 
