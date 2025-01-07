@@ -71,7 +71,7 @@
   <object id="2" name="solid" x="32" y="1887.36" width="544.181" height="32.587"/>
   <object id="7" name="solid" x="608.12" y="1888.01" width="1919.27" height="31.9896"/>
   <object id="8" name="solid" x="2527.99" y="1503.67" width="31.9374" height="416.292"/>
-  <object id="9" name="Player" x="2050.04" y="934.003" width="26.6667" height="23.5"/>
+  <object id="9" name="Player" x="579.378" y="1794" width="26.6667" height="23.5"/>
   <object id="12" name="easyEnemy" x="1187.58" y="1788.67" width="200" height="97"/>
   <object id="18" name="solid" x="1120.95" y="1502.47" width="32.0992" height="127.551"/>
   <object id="19" name="solid" x="1471.95" y="1504.47" width="32.0992" height="127.551"/>
