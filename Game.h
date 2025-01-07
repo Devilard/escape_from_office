@@ -72,7 +72,7 @@ public:
 	{
 		//Load Music and start play
 		music->openFromFile("sound/Powerfu_Trap.mp3");
-		music->setVolume(15.0f);
+		music->setVolume(4.0f);
 		music->play();
 		music->setLoop(true);
 
