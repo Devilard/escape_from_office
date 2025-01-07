@@ -65,8 +65,8 @@ public:
 			if (name == "User")
 			{
 				currentFrame += 0.005f * time;
-				if (currentFrame > 7) currentFrame -= 6;
-				sprite.setTextureRect(sf::IntRect(((64 * (int)currentFrame) + 64), 0, -64, 64));
+				if (currentFrame >= 14) currentFrame -= 13;
+				sprite.setTextureRect(sf::IntRect(((30 * (int)currentFrame) ), 1, 30, 72));
 			}
 			checkCollisionWithMap(dx, 0);
 			x += dx * time;

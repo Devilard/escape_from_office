@@ -107,7 +107,7 @@ public:
 		bulletImg->loadFromFile("layouts/img/bullet.png");
 
 		//Load user
-		userImg->loadFromFile("layouts/img/first_user.png");
+		userImg->loadFromFile("layouts/img/first_user_v2.png");
 
 		//Load enemy
 		easyEnemyImg->loadFromFile("layouts/img/shamaich.png");

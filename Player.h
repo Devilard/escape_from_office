@@ -57,7 +57,7 @@ public:
         }
 
         if ((Keyboard::isKeyPressed(Keyboard::Space)) && (onGround)) {
-            state = stateObject::jump; dy = -0.5; onGround = false;
+            state = stateObject::jump; dy = -0.65; onGround = false;
 
         }
 
