@@ -126,7 +126,7 @@ bool TileMap::load(const std::string& tmx_file_path)
 				// если номер тайла больше нуля, то есть место не пусто - записываем тайл в массив вершин
 				if (tile_num)
 				{   // обходим по часовой стрелке
-					sf::Vertex leftTop;     // Вевый верхний угол тайла
+					sf::Vertex leftTop;     // Левый верхний угол тайла
 					sf::Vertex rightTop;    // Верхний правый 
 					sf::Vertex rightBottom; // Нижний правый 
 					sf::Vertex leftBottom;  // Нижний левый

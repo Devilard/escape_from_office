@@ -45,7 +45,7 @@ public:
             state = stateObject::left;
             speed = 0.1f;
             currentFrame += 0.005f * time;
-            if (currentFrame > 4) currentFrame -= 3;
+            if (currentFrame > 5) currentFrame -= 3;
             sprite.setTextureRect(sf::IntRect(((36 * (int)currentFrame)) , 0, -36, 74));
         }
         if (Keyboard::isKeyPressed(Keyboard::Right) || Keyboard::isKeyPressed(Keyboard::D)) {

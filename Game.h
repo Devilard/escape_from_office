@@ -71,7 +71,7 @@ public:
 	void loadAll()
 	{
 		//Load Music and start play
-		music->openFromFile("sound/background_music.wav");
+		music->openFromFile("sound/Powerfu_Trap.mp3");
 		music->setVolume(15.0f);
 		music->play();
 		music->setLoop(true);
