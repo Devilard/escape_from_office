@@ -39,7 +39,9 @@ public:
     }
 
 
-    void control(float time) {
+    void control(float time)
+    {
+        state = stateObject::stay;
         
         if (Keyboard::isKeyPressed(Keyboard::Left) || Keyboard::isKeyPressed(Keyboard::A)) {
             state = stateObject::left;
@@ -80,7 +82,7 @@ public:
         case stateObject::up: break;
         case stateObject::down: break;
         case stateObject::jump: break;
-        case stateObject::stay: break;
+        case stateObject::stay: dx = 0; break;
         }
 
         x += dx * time;
@@ -130,25 +132,30 @@ public:
     void action()
     {
         std::vector<Object>::iterator it;
-        for (it = action_objects.begin(); it != action_objects.end(); it++)
+
+        if (state == stateObject::stay)
         {
-            
-            if (getRect().intersects(it->rect))
+            for (it = action_objects.begin(); it != action_objects.end(); it++)
             {
-                if (it->GetPropertyString("to") != "")
+
+                if (getRect().intersects(it->rect))
                 {
-                    Object To = levelCopy.getObjectById(std::stoi(it->GetPropertyString("to")));
+                    if (it->GetPropertyString("to") != "")
+                    {
+                        Object To = levelCopy.getObjectById(std::stoi(it->GetPropertyString("to")));
 
-                    y = To.rect.top;
-                    x = To.rect.left;
+                        y = To.rect.top;
+                        x = To.rect.left;
 
-                    break;
+                        break;
+                    }
+
+
+
                 }
-
-                
-
             }
         }
+
     }
     
 };
