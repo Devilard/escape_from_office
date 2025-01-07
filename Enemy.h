@@ -2,23 +2,35 @@
 #define _ENEMY_H_
 
 #include "Entity.h"
+#include "Player.h"
 
 
 class Enemy : public Entity
 {
 public:
 	float currentFrame;
-	Enemy(sf::Image &image, sf::String Name, TileMap& lvl, float X, float Y, int W, int H) : Entity(image, Name, X, Y, W, H)
+
+	Enemy(sf::Image& image, sf::String Name, TileMap& lvl, float X, float Y,  int W, int H ) : Entity(image, Name, X, Y, W, H)
+
 	{
 		obj = lvl.getObjectsByName("solid");
+	
+			if (name == "EasyEnemy")
+			{
+			
 
-		if (name == "EasyEnemy")
-		{
-			sprite.setTextureRect(sf::IntRect(0, 0, w, h));
-			dx = 0.1f;
-			currentFrame = 1.0f;
-		}
+				sprite.setTextureRect(sf::IntRect(0, 0, w, h));
+				dx = 0.1f;
+				currentFrame += 1.0f;
+				if (currentFrame > 5) currentFrame -= 4;
+				sprite.setTextureRect(sf::IntRect(((76 * (int)currentFrame)), 0, -78, 75));
+			}
 
+			if (name == "EasyEnemy")
+			{
+
+			}
+		
 		if (name == "User")
 		{
 			std::cout << "User\n";

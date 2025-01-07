@@ -32,7 +32,9 @@ public:
 	
 	sf::Image* bulletImg;
 
+	sf::Image* hardEnemyImg;
 	sf::Image* easyEnemyImg;
+	std::vector<Object> enemiesH;
 	std::vector<Object> enemies;
 	std::vector<Object> users;
 	std::vector<Object> doors;
@@ -64,6 +66,7 @@ public:
 		heroImg = new sf::Image;
 		bulletImg = new sf::Image();
 		easyEnemyImg = new sf::Image;
+		hardEnemyImg = new sf::Image;
 		userImg = new sf::Image;
 		isShowMission = true;
 	}
@@ -110,9 +113,13 @@ public:
 		userImg->loadFromFile("layouts/img/first_user_v2.png");
 
 		//Load enemy
-		easyEnemyImg->loadFromFile("layouts/img/shamaich.png");
+		easyEnemyImg->loadFromFile("layouts/img/shamaich2.png");
 		easyEnemyImg->createMaskFromColor(sf::Color(255, 0, 0));
 
+		hardEnemyImg->loadFromFile("layouts/img/shamaich2.png");
+		hardEnemyImg->createMaskFromColor(sf::Color(255, 0, 0));
+
+		enemiesH = currentLevel->getObjectsByName("hardEnemy");
 		enemies = currentLevel->getObjectsByName("easyEnemy");
 		users = currentLevel->getObjectsByName("User");
 		doors = currentLevel->getObjectsByType("door");
@@ -120,7 +127,7 @@ public:
 		//Filling the enemy list
 		for (int i = 0; i < enemies.size(); i++)
 		{
-			entities.push_back(new Enemy(*easyEnemyImg, "EasyEnemy", *currentLevel, enemies[i].rect.left, enemies[i].rect.top, 200, 97));
+			entities.push_back(new Enemy(*easyEnemyImg, "EasyEnemy", *currentLevel, enemies[i].rect.left, enemies[i].rect.top, 78, 65));
 		}
 
 		for (int i = 0; i < users.size(); i++)
@@ -128,7 +135,17 @@ public:
 			entities.push_back(new Enemy(*userImg, "User", *currentLevel, users[i].rect.left, users[i].rect.top, 64, 64));
 		}
 	}
+		//Filling the hardEnemy list Добавить нового врага 
+		/*for (int i = 0; i < enemiesH.size(); i++)
+		{
+		entities.push_back(new Enemy2(*hardEnemyImg, "HardEnemy", *currentLevel, enemies[i].rect.left, enemies[i].rect.top, 200, 97));
+		}
 
+		for (int i = 0; i < users.size(); i++)
+		{
+		entities.push_back(new Enemy2(*userImg, "User", *currentLevel, users[i].rect.left, users[i].rect.top, 64, 64));
+		}
+		*/
 
 
 	TileMap& getCurrentLevel() { return *currentLevel; }
