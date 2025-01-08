@@ -34,6 +34,8 @@ public:
 
 	sf::Image* hardEnemyImg;
 	sf::Image* easyEnemyImg;
+	sf::Image* angelEnemyImg;
+	std::vector<Object> enemiesA;
 	std::vector<Object> enemiesH;
 	std::vector<Object> enemies;
 	std::vector<Object> users;
@@ -67,6 +69,7 @@ public:
 		heroImg = new sf::Image;
 		bulletImg = new sf::Image();
 		easyEnemyImg = new sf::Image;
+		angelEnemyImg = new sf::Image;
 		hardEnemyImg = new sf::Image;
 		userImg = new sf::Image;
 		isShowMission = true;
@@ -92,12 +95,12 @@ public:
 		missionText->setFillColor(sf::Color::Red);
 
 		//Load mission background image, texture, sprite
-		missionBgImg->loadFromFile("layouts/img/missionbg.jpg");
+		missionBgImg->loadFromFile("layouts/img/missionbg.png");
 		missionBgImg->createMaskFromColor(sf::Color(0, 0, 0));
 		missionTexture->loadFromImage(*missionBgImg);
 		missionSprite->setTexture(*missionTexture);
-		missionSprite->setTextureRect(sf::IntRect(0, 0, 340, 510));
-		missionSprite->setScale(0.5f, 0.5f);
+		missionSprite->setTextureRect(sf::IntRect(0, 0, 1024, 1200));
+		missionSprite->setScale(0.35f, 0.35f);
 
 		changeLevel(1);
 		
@@ -120,15 +123,25 @@ public:
 		hardEnemyImg->loadFromFile("layouts/img/shamaich2.png");
 		hardEnemyImg->createMaskFromColor(sf::Color(255, 0, 0));
 
+		angelEnemyImg->loadFromFile("layouts/img/angel.png");
+		angelEnemyImg->createMaskFromColor(sf::Color(255, 0, 0));
+
 		enemiesH = currentLevel->getObjectsByName("hardEnemy");
 		enemies = currentLevel->getObjectsByName("easyEnemy");
 		users = currentLevel->getObjectsByName("User");
 		doors = currentLevel->getObjectsByType("door");
+		enemiesA = currentLevel->getObjectsByName("angelEnemy");
+
 
 		//Filling the enemy list
 		for (int i = 0; i < enemies.size(); i++)
 		{
 			entities.push_back(new Enemy(*easyEnemyImg, "EasyEnemy", *currentLevel, enemies[i].rect.left, enemies[i].rect.top, 78, 65));
+		}
+
+		for (int i = 0; i < enemiesA.size(); i++)
+		{
+			entities.push_back(new Enemy(*angelEnemyImg, "EasyEnemy", *currentLevel, enemiesA[i].rect.left, enemiesA[i].rect.top, 78, 65));
 		}
 
 		for (int i = 0; i < users.size(); i++)
@@ -324,7 +337,7 @@ public:
 		{
 			window.draw(*missionSprite);
 			window.draw(*missionText);
-			missionText->setPosition(getGameView()->view->getCenter().x + 125, getGameView()->view->getCenter().y - 130);
+			missionText->setPosition(getGameView()->view->getCenter().x + 190, getGameView()->view->getCenter().y - 50);
 			missionSprite->setPosition(getGameView()->view->getCenter().x + 115, getGameView()->view->getCenter().y - 130);
 
 		}
