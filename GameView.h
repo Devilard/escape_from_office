@@ -20,7 +20,7 @@ public:
 		if (x < 540) { x = 540; }
 		if (x > 1820) { x = 1820; }
 		if (y > 1650) { y = 1650; }
-
+		//view->setSize(600, 500);
 		view->setCenter(x + 100, y - 100); 
 	}
 
