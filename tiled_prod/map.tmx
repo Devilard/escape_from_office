@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="80" height="120" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="92">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="80" height="120" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="94">
  <tileset firstgid="1" source="tile_set_map.tsx"/>
  <tileset firstgid="257" source="tile_set_map2.tsx"/>
  <layer id="1" name="Слой тайлов 1" width="80" height="120">
@@ -130,7 +130,7 @@
   <object id="1" name="solid" x="0.0331439" y="1504.09" width="31.9062" height="415.917"/>
   <object id="2" name="solid" x="32.5" y="1894.86" width="2517.5" height="24.587"/>
   <object id="8" name="solid" x="2549.99" y="1503.67" width="9.9374" height="416.292"/>
-  <object id="9" name="Player" x="576.105" y="1827.94" width="26.6667" height="23.5"/>
+  <object id="9" name="Player" x="1899.44" y="1177.94" width="26.6667" height="23.5"/>
   <object id="28" name="User" x="2317.66" y="1824.82" width="64" height="64"/>
   <object id="45" name="solid" x="0.0909091" y="1277.18" width="2559.91" height="3.5"/>
   <object id="47" name="door1" type="door" x="2412.76" y="3748.15" width="52.6667" height="50.6667">
@@ -181,7 +181,11 @@
   </object>
   <object id="84" name="solid" x="2533" y="3080" width="26" height="759"/>
   <object id="85" name="solid" x="4" y="3079.5" width="26" height="759"/>
-  <object id="86" name="User" x="607.667" y="3743.67" width="64" height="64"/>
+  <object id="86" name="User" x="607.667" y="3743.67" width="64" height="64">
+   <properties>
+    <property name="QuestName" value="FuckingMouse"/>
+   </properties>
+  </object>
   <object id="87" name="exclamationMark" x="799.5" y="3691.33" width="41.5" height="32.5"/>
   <object id="88" name="solid" x="1603.33" y="3614.33" width="32.6667" height="197.333"/>
   <object id="90" name="door1" type="door" x="1664.33" y="3744.33" width="62.6667" height="62.6667">
@@ -190,5 +194,10 @@
    </properties>
   </object>
   <object id="91" name="exclamationMark" x="105.25" y="1075.25" width="41.5" height="32.5"/>
+  <object id="92" name="User" x="199.333" y="3736.33" width="64" height="64">
+   <properties>
+    <property name="QuestName" value="Ebat"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

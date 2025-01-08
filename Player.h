@@ -38,7 +38,12 @@ public:
         sound.setBuffer(buffer);
     }
 
+    sf::Sprite& getExMark()
+    {
+        sf::Sprite sp;
 
+        return sp;
+    }
     void control(float time)
     {
         state = stateObject::stay;
@@ -50,12 +55,13 @@ public:
             if (currentFrame > 5) currentFrame -= 3;
             sprite.setTextureRect(sf::IntRect(((36 * (int)currentFrame)) , 0, -36, 74));
         }
+
         if (Keyboard::isKeyPressed(Keyboard::Right) || Keyboard::isKeyPressed(Keyboard::D)) {
             state = stateObject::right;
             speed = 0.1f;
-            	currentFrame += 0.005f * time;
-            	if (currentFrame > 4) currentFrame -= 3;
-            	sprite.setTextureRect(sf::IntRect((36 * (int)currentFrame), 0, 36, 74));
+            currentFrame += 0.005f * time;
+            if (currentFrame > 4) currentFrame -= 3;
+            sprite.setTextureRect(sf::IntRect((36 * (int)currentFrame), 0, 36, 74));
         }
 
         if ((Keyboard::isKeyPressed(Keyboard::Space)) && (onGround)) {
@@ -82,7 +88,7 @@ public:
         case stateObject::up: break;
         case stateObject::down: break;
         case stateObject::jump: break;
-        case stateObject::stay: dx = 0; break;
+        case stateObject::stay: dx = speed; break;
         }
 
         x += dx * time;

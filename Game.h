@@ -147,22 +147,50 @@ public:
 		//Filling the enemy list
 		for (int i = 0; i < enemies.size(); i++)
 		{
-			entities.push_back(new Enemy(*easyEnemyImg, "EasyEnemy", *currentLevel, enemies[i].rect.left, enemies[i].rect.top, 78, 65));
+			std::string questName = enemies[i].GetPropertyString("QuestName");
+			if (questName != "")
+			{
+				entities.push_back(new Enemy(*easyEnemyImg, "EasyEnemy", *currentLevel, enemies[i].rect.left, enemies[i].rect.top, 78, 65, questName));
+			}
+			else
+			{
+				entities.push_back(new Enemy(*easyEnemyImg, "EasyEnemy", *currentLevel, enemies[i].rect.left, enemies[i].rect.top, 78, 65, questName));
+			}
+			
 		}
 
 		for (int i = 0; i < enemiesA.size(); i++)
 		{
-			entities.push_back(new Enemy(*angelEnemyImg, "EasyEnemy", *currentLevel, enemiesA[i].rect.left, enemiesA[i].rect.top, 78, 65));
+			std::string questName = "";
+			entities.push_back(new Enemy(*angelEnemyImg, "EasyEnemy", *currentLevel, enemiesA[i].rect.left, enemiesA[i].rect.top, 78, 65, questName));
 		}
 
 		for (int i = 0; i < users.size(); i++)
 		{
-			entities.push_back(new Enemy(*userImg, "User", *currentLevel, users[i].rect.left, users[i].rect.top, 64, 64));
+			std::string questName = users[i].GetPropertyString("QuestName");
+			if (questName != "")
+			{
+				entities.push_back(new Enemy(*userImg, "User", *currentLevel, users[i].rect.left, users[i].rect.top, 64, 64, questName));
+			}
+			else
+			{
+				entities.push_back(new Enemy(*userImg, "User", *currentLevel, users[i].rect.left, users[i].rect.top, 64, 64, ""));
+			}
+			
 		}
+
 		for (int i = 0; i < mark.size(); i++)
 		{
-			entities.push_back(new Enemy(*exclamationMarkImg, "User", *currentLevel, mark[i].rect.left, mark[i].rect.top, 32, 32));
+			std::string questName = "";
+			entities.push_back(new Enemy(*exclamationMarkImg, "User", *currentLevel, mark[i].rect.left, mark[i].rect.top, 32, 32, questName));
 		}
+
+		/*
+		* if( entities[i].name == "user1")
+		* {
+		*	entities[i].setQust(Quest1337);
+		* }
+		*/
 	}
 
 	void changeLevel(int nl)
@@ -192,17 +220,6 @@ public:
 			}
 		}
 	}
-		//Filling the hardEnemy list Добавить нового врага 
-		/*for (int i = 0; i < enemiesH.size(); i++)
-		{
-		entities.push_back(new Enemy2(*hardEnemyImg, "HardEnemy", *currentLevel, enemies[i].rect.left, enemies[i].rect.top, 200, 97));
-		}
-
-		for (int i = 0; i < users.size(); i++)
-		{
-		entities.push_back(new Enemy2(*userImg, "User", *currentLevel, users[i].rect.left, users[i].rect.top, 64, 64));
-		}
-		*/
 
 
 	TileMap& getCurrentLevel() { return *currentLevel; }
@@ -260,7 +277,7 @@ public:
 
 			time = time / 800;
 
-			pollEvent(window, pos);
+			processInput(window, pos);
 
 
 			update(time);
@@ -275,7 +292,7 @@ public:
 
 	}
 
-	void pollEvent(sf::RenderWindow& window, sf::Vector2f pos)
+	void processInput(sf::RenderWindow& window, sf::Vector2f pos)
 	{
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -337,7 +354,14 @@ public:
 	{
 		window.clear();
 		window.draw(getCurrentLevel());
-		for (it = getEntities().begin(); it != getEntities().end(); it++) { window.draw((*it)->sprite); }
+		for (it = getEntities().begin(); it != getEntities().end(); it++)
+		{
+			window.draw((*it)->sprite); 
+			if ((*it)->isHaveQuest)
+			{
+				window.draw((*it)->getExMark());
+			}
+		}
 		window.draw(getPlayer().sprite);
 
 		/*
@@ -386,8 +410,8 @@ private:
 
 					if ((player->dy > 0) && (player->onGround == false)) { (*it)->dx = 0; player->dy = -0.2f; (*it)->health = 0; }
 					else {
-						player->dy = -0.4f;
-						player->dx = -0.4f;
+						
+						player->dx = -10.0f;
 						
 						player->health -= 5;
 					}

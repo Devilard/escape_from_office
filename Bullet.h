@@ -31,6 +31,13 @@ public:
 		normal_vec_y = temp_vec_dir.y / vector_direction_length;
 	}
 
+	sf::Sprite& getExMark()
+	{
+		sf::Sprite sp;
+
+		return sp;
+	}
+
 	void update(float time)
 	{
 		if (name == "Bullet")

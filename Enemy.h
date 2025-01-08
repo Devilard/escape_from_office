@@ -8,53 +8,38 @@
 class Enemy : public Entity
 {
 public:
-	float currentFrame;
-
-	Enemy(sf::Image& image, sf::String Name, TileMap& lvl, float X, float Y,  int W, int H ) : Entity(image, Name, X, Y, W, H)
-
+	float currentFrame{0.0f};
+	sf::Texture* exMarkTexture;
+	sf::Sprite* exMarkSprite;
+	std::string questName;
+	Enemy(sf::Image& image, sf::String Name, TileMap& lvl, float X, float Y,  int W, int H, std::string qn) : Entity(image, Name, X, Y, W, H)
 	{
+		questName = qn;
+		exMarkTexture = new sf::Texture;
+		exMarkTexture->loadFromFile("layouts/img/exclamation_mark.png");
+		exMarkSprite = new sf::Sprite;
+		exMarkSprite->setTexture(*exMarkTexture);
+		exMarkSprite->setTextureRect(sf::IntRect(12, 0, 7, 28));
+		
 		obj = lvl.getObjectsByName("solid");
-	
-			if (name == "EasyEnemy")
-			{
+		currentFrame = 0.0f;
+		if (name == "EasyEnemy")
+		{
+			sprite.setTextureRect(sf::IntRect(0, 0, w, h));
+			dx = 0.1f;
 			
-
-				sprite.setTextureRect(sf::IntRect(0, 0, w, h));
-				dx = 0.1f;
-				currentFrame = 0.0f;
-				if (currentFrame > 5) currentFrame -= 4;
-				sprite.setTextureRect(sf::IntRect(((76 * (int)currentFrame)), 0, -78, 75));
-			}
-
-			if (name == "EasyEnemy")
-			{
-
-			}
+			if (currentFrame > 5) currentFrame -= 4;
+			sprite.setTextureRect(sf::IntRect(((76 * (int)currentFrame)), 0, -78, 75));
+		}
 		
 		if (name == "User")
 		{
-			std::cout << "User\n";
 			sprite.setTextureRect(sf::IntRect(0, 0, w, h));
 		}
 	}
 
 	void checkCollisionWithMap(float Dx, float Dy)
 	{
-		/*
-		for (int i = y / 32; i < (y + h) / 32; i++)
-		{
-			for (int j = x / 32; j < (x + w) / 32; j++)
-			{
-				if (TileMap[i][j] == '0')//если элемент наш тайлик земли, то
-				{
-					if (Dy > 0) { y = i * 32 - h; }//по Y вниз=>идем в пол(стоим на месте) или падаем. В этот момент надо вытолкнуть персонажа и поставить его на землю, при этом говорим что мы на земле тем самым снова можем прыгать
-					if (Dy < 0) { y = i * 32 + 32; }//столкновение с верхними краями карты(может и не пригодиться)
-					if (Dx > 0) { x = j * 32 - w; dx = -0.1; sprite.scale(-1, 1); }//с правым краем карты
-					if (Dx < 0) { x = j * 32 + 32; dx = 0.1; sprite.scale(-1, 1); }// с левым краем карты
-				}
-			}
-		}
-		*/
 
 		for (int i = 0; i < obj.size(); i++)
 		{
@@ -80,6 +65,10 @@ public:
 				currentFrame += 0.005f * time;
 				if (currentFrame >= 4) currentFrame -= 3;
 				sprite.setTextureRect(sf::IntRect(((30 * (int)currentFrame) ), 1, 30, 72));
+				if (questName != "")
+				{
+					isHaveQuest = true;
+				}
 			}
 			if (name == "EasyEnemy")
 			{
@@ -90,6 +79,7 @@ public:
 			checkCollisionWithMap(dx, 0);
 			x += dx * time;
 			sprite.setPosition(x + w / 2, y + h / 2);
+			exMarkSprite->setPosition(x + 15, y - 40);
 			if (health <= 0) { life = false; }
 
 			if (life == false)
@@ -104,6 +94,15 @@ public:
 		}
 	}
 
+	void setQuest()
+	{
+		
+	}
+
+	sf::Sprite& getExMark()
+	{
+		return *exMarkSprite;
+	}
 };
 
 #endif

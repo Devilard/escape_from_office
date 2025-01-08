@@ -14,6 +14,7 @@ public:
 	std::vector<Object> obj;
 	bool isAnimationDeathEnd;
 	float deathAnimationTimer;
+	bool isHaveQuest;
 
 	Entity(sf::Image &image, sf::String Name,float X, float Y, int W, int H)
 	{
@@ -23,6 +24,7 @@ public:
 		texture.loadFromImage(image);
 		sprite.setTexture(texture);
 		sprite.setOrigin(w / 2, h / 2);
+		isHaveQuest = false;
 	}
 
 	sf::FloatRect getRect()
@@ -31,6 +33,7 @@ public:
 	}
 
 	virtual void update(float time) = 0;
+	virtual sf::Sprite& getExMark() = 0;
 };
 
 
