@@ -21,7 +21,7 @@ public:
 
 				sprite.setTextureRect(sf::IntRect(0, 0, w, h));
 				dx = 0.1f;
-				currentFrame += 1.0f;
+				currentFrame = 0.0f;
 				if (currentFrame > 5) currentFrame -= 4;
 				sprite.setTextureRect(sf::IntRect(((76 * (int)currentFrame)), 0, -78, 75));
 			}
@@ -78,8 +78,14 @@ public:
 			if (name == "User")
 			{
 				currentFrame += 0.005f * time;
-				if (currentFrame >= 14) currentFrame -= 13;
+				if (currentFrame >= 4) currentFrame -= 3;
 				sprite.setTextureRect(sf::IntRect(((30 * (int)currentFrame) ), 1, 30, 72));
+			}
+			if (name == "EasyEnemy")
+			{
+				currentFrame += 0.005f * time;
+				if (currentFrame >= 4) currentFrame -= 3;
+				sprite.setTextureRect(sf::IntRect(((78 * (int)currentFrame)), 0, -78, 75));
 			}
 			checkCollisionWithMap(dx, 0);
 			x += dx * time;
