@@ -18,9 +18,9 @@ public:
 	void update(float x, float y) 
 	{
 		if (x < 540) { x = 540; }
-		if (x > 1820) { x = 1820; }
-		if (y > 1650) { y = 1650; }
-		//view->setSize(600, 500);
+		if (x > 3820) { x = 3820; }
+		if (y > 3650) { y = 3650; }
+		view->setSize(1500, 1200);
 		view->setCenter(x + 100, y - 100); 
 	}
 

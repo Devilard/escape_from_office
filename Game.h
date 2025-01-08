@@ -32,6 +32,8 @@ public:
 	
 	sf::Image* bulletImg;
 
+	sf::Image* exclamationMarkImg;
+
 	sf::Image* hardEnemyImg;
 	sf::Image* easyEnemyImg;
 	sf::Image* angelEnemyImg;
@@ -40,6 +42,8 @@ public:
 	std::vector<Object> enemies;
 	std::vector<Object> users;
 	std::vector<Object> doors;
+	std::vector<Object> mark;
+
 	
 	sf::Image* userImg;
 
@@ -71,6 +75,7 @@ public:
 		easyEnemyImg = new sf::Image;
 		angelEnemyImg = new sf::Image;
 		hardEnemyImg = new sf::Image;
+		exclamationMarkImg = new sf::Image;
 		userImg = new sf::Image;
 		isShowMission = true;
 		levelNumber = 1;
@@ -103,6 +108,12 @@ public:
 		missionSprite->setScale(0.35f, 0.35f);
 
 		changeLevel(1);
+		
+		//Load exclamation_mark
+		exclamationMarkImg->loadFromFile("layouts/img/exclamation_mark.png");
+		exclamationMarkImg->createMaskFromColor(sf::Color(255, 0, 0));
+
+		mark = currentLevel->getObjectsByName("exclamationMark");
 		
 
 		//Load hero
@@ -147,6 +158,10 @@ public:
 		for (int i = 0; i < users.size(); i++)
 		{
 			entities.push_back(new Enemy(*userImg, "User", *currentLevel, users[i].rect.left, users[i].rect.top, 64, 64));
+		}
+		for (int i = 0; i < mark.size(); i++)
+		{
+			entities.push_back(new Enemy(*exclamationMarkImg, "User", *currentLevel, mark[i].rect.left, mark[i].rect.top, 32, 32));
 		}
 	}
 

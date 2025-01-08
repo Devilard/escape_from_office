@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="3">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="5">
  <tileset firstgid="1" source="tile_set_map.tsx"/>
  <layer id="1" name="Слой тайлов 1" width="30" height="20">
   <data encoding="csv">
@@ -22,11 +22,17 @@
 6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,
 6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,
 6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,
-13,13,13,13,13,13,13,13,6,6,6,6,6,6,6,6,6,6,6,5,5,5,5,5,5,5,5,5,5,5
+21,21,21,21,21,21,21,21,6,6,6,6,6,6,6,6,6,6,6,5,5,5,5,5,5,5,5,5,5,5
 </data>
  </layer>
  <objectgroup id="2" name="collision">
   <object id="1" name="solid" x="0.153706" y="608.043" width="959.691" height="31.8094" rotation="359.991"/>
   <object id="2" name="Player" x="107.5" y="555.5" width="37.5" height="25"/>
+  <object id="3" name="door6" type="door" x="317.563" y="530.363" width="43.6512" height="74.2071"/>
+  <object id="4" name="door1" type="door" x="515.458" y="525.768" width="56" height="74.6667">
+   <properties>
+    <property name="to" type="object" value="48"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>
