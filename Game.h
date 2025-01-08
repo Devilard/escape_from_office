@@ -51,6 +51,7 @@ public:
 	bool isShowMission;
 
 	Mission* mission;
+	int levelNumber;
 
 	Game()
 	{
@@ -69,6 +70,7 @@ public:
 		hardEnemyImg = new sf::Image;
 		userImg = new sf::Image;
 		isShowMission = true;
+		levelNumber = 1;
 	}
 
 	void loadAll()
@@ -97,9 +99,8 @@ public:
 		missionSprite->setTextureRect(sf::IntRect(0, 0, 340, 510));
 		missionSprite->setScale(0.5f, 0.5f);
 
-
-		std::string str_path{ "tiled_prod/map.tmx" };
-		currentLevel->load(str_path);
+		changeLevel(1);
+		
 
 		//Load hero
 		heroImg->loadFromFile("layouts/img/office_man.png");
@@ -133,6 +134,34 @@ public:
 		for (int i = 0; i < users.size(); i++)
 		{
 			entities.push_back(new Enemy(*userImg, "User", *currentLevel, users[i].rect.left, users[i].rect.top, 64, 64));
+		}
+	}
+
+	void changeLevel(int nl)
+	{
+		levelNumber = nl;
+		switch (levelNumber)
+		{
+			case 1:
+			{
+				currentLevel->clearLevel();
+				currentLevel->load("tiled_prod/map.tmx");
+				break;
+			}
+			
+			case 2: 
+			{
+				entities.clear();
+				currentLevel->clearLevel();
+
+				currentLevel->load("tiled_prod/level_2.tmx");
+				delete PlayerObject;
+				PlayerObject = new Object(currentLevel->getObject("Player"));
+				player->x = getPlayerObject().rect.left;
+				player->y = getPlayerObject().rect.top;
+				
+				break;
+			}
 		}
 	}
 		//Filling the hardEnemy list Добавить нового врага 
@@ -254,6 +283,12 @@ public:
 						player->action();
 					}
 					
+				}
+
+				if (event.key.code == sf::Keyboard::L)
+				{
+					
+					changeLevel(2);
 				}
 			}
 

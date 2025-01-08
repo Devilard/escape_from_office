@@ -31,6 +31,7 @@ public:
 	std::vector<Object>  getObjectsByType(const std::string& type);
 	std::vector<Object>& getAllObjects();
 	Object				 getObjectById(const int id);
+	void				 clearLevel();
 private:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	sf::Texture* texture;
@@ -42,6 +43,12 @@ TileMap::~TileMap()
 	if (texture)
 		delete texture;
 }
+void TileMap::clearLevel()
+{
+	tile_layers.clear();
+	objects.clear();
+}
+
 bool TileMap::load(const std::string& tmx_file_path)
 {
 	tinyxml2::XMLDocument document;
