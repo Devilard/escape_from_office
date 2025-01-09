@@ -14,7 +14,7 @@ public:
 	float normal_vec_y;
 	sf::Vector2f temp_vec_dir;
 
-	Bullet(sf::Image &image, sf::String Name, TileMap& lvl, float X, float Y, int W, int H, sf::Vector2f direction) : Entity(image, Name, X, Y, W, H)
+	Bullet(sf::Image &image, sf::String Name, TileMap& lvl, float X, float Y, float W, float H, sf::Vector2f direction) : Entity(image, Name, X, Y, W, H)
 	{
 		
 		obj = lvl.getAllObjects();

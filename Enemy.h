@@ -2,7 +2,6 @@
 #define _ENEMY_H_
 
 #include "Entity.h"
-#include "Player.h"
 
 
 class Enemy : public Entity
@@ -12,7 +11,8 @@ public:
 	sf::Texture* exMarkTexture;
 	sf::Sprite* exMarkSprite;
 	std::string questName;
-	Enemy(sf::Image& image, sf::String Name, TileMap& lvl, float X, float Y,  int W, int H, std::string qn, int ID) : Entity(image, Name, X, Y, W, H)
+	Enemy(sf::Image& image, sf::String Name, float X, float Y, float W, float H) : Entity(image, Name, X, Y, W, H) {};
+	Enemy(sf::Image& image, sf::String Name, TileMap& lvl, float X, float Y,  float W, float H, std::string qn, int ID) : Entity(image, Name, X, Y, W, H)
 	{
 		id = ID;
 		questName = qn;
@@ -31,7 +31,7 @@ public:
 		currentFrame = 0.0f;
 		if (name == "EasyEnemy")
 		{
-			sprite.setTextureRect(sf::IntRect(0, 0, w, h));
+			sprite.setTextureRect(sf::IntRect(0, 0, static_cast<int>(w), static_cast<int>(h)));
 			dx = 0.1f;
 			
 			if (currentFrame > 5) currentFrame -= 4;
@@ -40,7 +40,7 @@ public:
 		
 		if (name == "User")
 		{
-			sprite.setTextureRect(sf::IntRect(0, 0, w, h));
+			sprite.setTextureRect(sf::IntRect(0, 0, static_cast<int>(w), static_cast<int>(h)));
 		}
 	}
 
@@ -62,7 +62,7 @@ public:
 		}
 	}
 
-	void update(float time)
+	void update(float time) override
 	{
 		if (name == "EasyEnemy" || name == "User")
 		{
@@ -79,21 +79,24 @@ public:
 				if (currentFrame >= 4) currentFrame -= 3;
 				sprite.setTextureRect(sf::IntRect(((78 * (int)currentFrame)), 0, -78, 75));
 			}
-			checkCollisionWithMap(dx, 0);
+
 			x += dx * time;
+			checkCollisionWithMap(dx, 0);
 			sprite.setPosition(x + w / 2, y + h / 2);
 			exMarkSprite->setPosition(x + 15, y - 40);
-			if (health <= 0) { life = false; }
+			
+			if (health <= 0) { life = false; death(time);}
 
-			if (life == false)
-			{
-				sprite.setColor(sf::Color::Red);
-				deathAnimationTimer += time;
-				if (deathAnimationTimer > 100)
-				{
-					isAnimationDeathEnd = true;
-				}
-			}
+		}
+	}
+
+	void death(float time)
+	{
+		sprite.setColor(sf::Color::Red);
+		deathAnimationTimer += time;
+		if (deathAnimationTimer > 100)
+		{
+			isAnimationDeathEnd = true;
 		}
 	}
 

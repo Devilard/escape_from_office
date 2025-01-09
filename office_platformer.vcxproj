@@ -160,6 +160,7 @@
     <ClInclude Include="libs\tinyxml2\tinyxml2.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Mission.h" />
+    <ClInclude Include="NPC.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="GameView.h" />
   </ItemGroup>

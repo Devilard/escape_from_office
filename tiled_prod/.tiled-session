@@ -18,11 +18,11 @@
             "scaleInEditor": 1
         },
         "map.tmx": {
-            "scale": 0.75,
+            "scale": 0.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 1585.3333333333335,
-                "y": 279.33333333333326
+                "x": 673,
+                "y": 3303
             }
         },
         "map.tmx#Tiny_Chao_Garden_SonicAdv_3_Tile_Sheet": {
@@ -32,6 +32,9 @@
         "tile_set_map.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
+        },
+        "tile_set_map2.tsx": {
+            "scaleInDock": 1
         }
     },
     "last.imagePath": "D:/projects/office_platformer/layouts/img",
