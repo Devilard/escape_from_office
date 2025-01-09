@@ -7,6 +7,7 @@
 #include "level.h"
 #include "Bullet.h"
 #include "GameView.h"
+#include "Enemy.h"
 
 
 using sf::Keyboard;
@@ -27,9 +28,10 @@ public:
     {
         
         isActionKeyPressed = true;
+        
         levelCopy = lev;
         playerScore = 0; state = stateObject::stay; obj = lev.getAllObjects();
-        action_objects = lev.getObjectsByType("door");
+        action_objects = lev.getObjectsByType("action");
         if (name == "Player1")
         {
             sprite.setTextureRect(sf::IntRect(0, 0, w, h));
@@ -135,10 +137,10 @@ public:
         entities.push_back(new Bullet(*bulletImg, "Bullet", *currentLevel, x, y, 16, 16, pos));
     }
 
-    void action()
+    void action(std::list<Entity*>& entities)
     {
         std::vector<Object>::iterator it;
-
+        std::list<Entity*>::iterator it2;
         if (state == stateObject::stay)
         {
             for (it = action_objects.begin(); it != action_objects.end(); it++)
@@ -146,17 +148,37 @@ public:
 
                 if (getRect().intersects(it->rect))
                 {
-                    if (it->GetPropertyString("to") != "")
+                    if (it->properties["class"] == "door")
                     {
-                        Object To = levelCopy.getObjectById(std::stoi(it->GetPropertyString("to")));
+                        if (it->properties["to"] != "")
+                        {
+                            Object To = levelCopy.getObjectById(std::stoi(it->GetPropertyString("to")));
 
-                        y = To.rect.top;
-                        x = To.rect.left;
+                            y = To.rect.top;
+                            x = To.rect.left;
 
-                        break;
+                            break;
+                        }
                     }
 
-
+                    if (it->properties["class"] == "npc")
+                    {
+                        for (it2 = entities.begin(); it2 != entities.end(); it2++)
+                        {
+                            if ((*it2)->id == it->id)
+                            {
+                                if ((*it2)->isHaveQuest)
+                                {
+                                    std::cout << "i can take the quest " << (*it2)->id << "\n";
+                                    
+                                    (*it2)->isHaveQuest = false;
+                                                                        
+                                    break;
+                                }
+                            }  
+                        }
+                        
+                    }
 
                 }
             }

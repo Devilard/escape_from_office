@@ -41,7 +41,6 @@ public:
 	std::vector<Object> enemiesH;
 	std::vector<Object> enemies;
 	std::vector<Object> users;
-	std::vector<Object> doors;
 	std::vector<Object> mark;
 
 	
@@ -140,7 +139,6 @@ public:
 		enemiesH = currentLevel->getObjectsByName("hardEnemy");
 		enemies = currentLevel->getObjectsByName("easyEnemy");
 		users = currentLevel->getObjectsByName("User");
-		doors = currentLevel->getObjectsByType("door");
 		enemiesA = currentLevel->getObjectsByName("angelEnemy");
 
 
@@ -150,11 +148,11 @@ public:
 			std::string questName = enemies[i].GetPropertyString("QuestName");
 			if (questName != "")
 			{
-				entities.push_back(new Enemy(*easyEnemyImg, "EasyEnemy", *currentLevel, enemies[i].rect.left, enemies[i].rect.top, 78, 65, questName));
+				entities.push_back(new Enemy(*easyEnemyImg, "EasyEnemy", *currentLevel, enemies[i].rect.left, enemies[i].rect.top, 78, 65, questName, enemies[i].id));
 			}
 			else
 			{
-				entities.push_back(new Enemy(*easyEnemyImg, "EasyEnemy", *currentLevel, enemies[i].rect.left, enemies[i].rect.top, 78, 65, questName));
+				entities.push_back(new Enemy(*easyEnemyImg, "EasyEnemy", *currentLevel, enemies[i].rect.left, enemies[i].rect.top, 78, 65, questName, enemies[i].id));
 			}
 			
 		}
@@ -162,7 +160,7 @@ public:
 		for (int i = 0; i < enemiesA.size(); i++)
 		{
 			std::string questName = "";
-			entities.push_back(new Enemy(*angelEnemyImg, "EasyEnemy", *currentLevel, enemiesA[i].rect.left, enemiesA[i].rect.top, 78, 65, questName));
+			entities.push_back(new Enemy(*angelEnemyImg, "EasyEnemy", *currentLevel, enemiesA[i].rect.left, enemiesA[i].rect.top, 78, 65, questName, enemiesA[i].id));
 		}
 
 		for (int i = 0; i < users.size(); i++)
@@ -170,11 +168,11 @@ public:
 			std::string questName = users[i].GetPropertyString("QuestName");
 			if (questName != "")
 			{
-				entities.push_back(new Enemy(*userImg, "User", *currentLevel, users[i].rect.left, users[i].rect.top, 64, 64, questName));
+				entities.push_back(new Enemy(*userImg, "User", *currentLevel, users[i].rect.left, users[i].rect.top, 64, 64, questName, users[i].id));
 			}
 			else
 			{
-				entities.push_back(new Enemy(*userImg, "User", *currentLevel, users[i].rect.left, users[i].rect.top, 64, 64, ""));
+				entities.push_back(new Enemy(*userImg, "User", *currentLevel, users[i].rect.left, users[i].rect.top, 64, 64, "", users[i].id));
 			}
 			
 		}
@@ -182,7 +180,7 @@ public:
 		for (int i = 0; i < mark.size(); i++)
 		{
 			std::string questName = "";
-			entities.push_back(new Enemy(*exclamationMarkImg, "User", *currentLevel, mark[i].rect.left, mark[i].rect.top, 32, 32, questName));
+			entities.push_back(new Enemy(*exclamationMarkImg, "User", *currentLevel, mark[i].rect.left, mark[i].rect.top, 32, 32, questName, mark[i].id));
 		}
 
 		/*
@@ -325,7 +323,7 @@ public:
 				{
 					if (player->isActionKeyPressed)
 					{
-						player->action();
+						player->action(getEntities());
 					}
 					
 				}

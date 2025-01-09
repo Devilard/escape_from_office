@@ -3,6 +3,7 @@
 #include "./libs/tinyxml2/tinyxml2.h"
 #include <iostream>
 #include <cctype>
+#include <map>
 
 class Object
 {

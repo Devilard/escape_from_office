@@ -12,9 +12,15 @@ public:
 	sf::Texture* exMarkTexture;
 	sf::Sprite* exMarkSprite;
 	std::string questName;
-	Enemy(sf::Image& image, sf::String Name, TileMap& lvl, float X, float Y,  int W, int H, std::string qn) : Entity(image, Name, X, Y, W, H)
+	Enemy(sf::Image& image, sf::String Name, TileMap& lvl, float X, float Y,  int W, int H, std::string qn, int ID) : Entity(image, Name, X, Y, W, H)
 	{
+		id = ID;
 		questName = qn;
+		if (questName != "")
+		{
+			isHaveQuest = true;
+		}
+
 		exMarkTexture = new sf::Texture;
 		exMarkTexture->loadFromFile("layouts/img/exclamation_mark.png");
 		exMarkSprite = new sf::Sprite;
@@ -65,10 +71,7 @@ public:
 				currentFrame += 0.005f * time;
 				if (currentFrame >= 4) currentFrame -= 3;
 				sprite.setTextureRect(sf::IntRect(((30 * (int)currentFrame) ), 1, 30, 72));
-				if (questName != "")
-				{
-					isHaveQuest = true;
-				}
+
 			}
 			if (name == "EasyEnemy")
 			{

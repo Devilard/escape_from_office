@@ -130,16 +130,18 @@
   <object id="1" name="solid" x="0.0331439" y="1504.09" width="31.9062" height="415.917"/>
   <object id="2" name="solid" x="32.5" y="1894.86" width="2517.5" height="24.587"/>
   <object id="8" name="solid" x="2549.99" y="1503.67" width="9.9374" height="416.292"/>
-  <object id="9" name="Player" x="1899.44" y="1177.94" width="26.6667" height="23.5"/>
+  <object id="9" name="Player" x="429.44" y="3759.94" width="26.6667" height="23.5"/>
   <object id="28" name="User" x="2317.66" y="1824.82" width="64" height="64"/>
   <object id="45" name="solid" x="0.0909091" y="1277.18" width="2559.91" height="3.5"/>
-  <object id="47" name="door1" type="door" x="2412.76" y="3748.15" width="52.6667" height="50.6667">
+  <object id="47" name="door1" type="action" x="2412.76" y="3748.15" width="52.6667" height="50.6667">
    <properties>
+    <property name="class" value="door"/>
     <property name="to" type="object" value="83"/>
    </properties>
   </object>
-  <object id="48" name="door2" type="door" x="256" y="1087" width="24" height="65.8788">
+  <object id="48" name="door2" type="action" x="256" y="1087" width="24" height="65.8788">
    <properties>
+    <property name="class" value="door"/>
     <property name="to" type="object" value="90"/>
    </properties>
   </object>
@@ -154,42 +156,48 @@
   <object id="61" name="solid" x="1475" y="962.333" width="222" height="30"/>
   <object id="62" name="solid" x="1795.67" y="959.667" width="283.333" height="30"/>
   <object id="63" name="solid" x="2211.67" y="929" width="319.333" height="30"/>
-  <object id="64" name="door4" type="door" x="31.8333" y="510.583" width="30.25" height="63.75">
+  <object id="64" name="door4" type="action" x="31.8333" y="510.583" width="30.25" height="63.75">
    <properties>
+    <property name="class" value="door"/>
     <property name="to" type="object" value="69"/>
    </properties>
   </object>
   <object id="66" name="easyEnemy" x="1609.33" y="1144.83" width="200" height="97"/>
   <object id="67" name="easyEnemy" x="1185.33" y="923.5" width="200" height="97"/>
   <object id="68" name="solid" x="31.5017" y="579" width="2526.33" height="26"/>
-  <object id="69" name="door3" type="door" x="2493.54" y="860.792" width="30.25" height="63.75">
+  <object id="69" name="door3" type="action" x="2493.54" y="860.792" width="30.25" height="63.75">
    <properties>
+    <property name="class" value="door"/>
     <property name="to" type="object" value="64"/>
    </properties>
   </object>
-  <object id="76" name="door5" type="door" x="690.667" y="504" width="56" height="74.6667">
+  <object id="76" name="door5" type="action" x="690.667" y="504" width="56" height="74.6667">
    <properties>
+    <property name="class" value="door"/>
     <property name="to" type="object" value="75"/>
    </properties>
   </object>
   <object id="77" name="angelEnemy" x="1040" y="475.5" width="200" height="97"/>
   <object id="82" name="solid" x="35.0682" y="3812.86" width="2495.5" height="24.587"/>
-  <object id="83" name="door7" type="door" x="2475.88" y="1794.48" width="59" height="99.6667">
+  <object id="83" name="door7" type="action" x="2475.88" y="1794.48" width="59" height="99.6667">
    <properties>
+    <property name="class" value="door"/>
     <property name="to" type="object" value="47"/>
    </properties>
   </object>
   <object id="84" name="solid" x="2533" y="3080" width="26" height="759"/>
   <object id="85" name="solid" x="4" y="3079.5" width="26" height="759"/>
-  <object id="86" name="User" x="607.667" y="3743.67" width="64" height="64">
+  <object id="86" name="User" type="action" x="607.667" y="3743.67" width="64" height="64">
    <properties>
     <property name="QuestName" value="FuckingMouse"/>
+    <property name="class" value="npc"/>
    </properties>
   </object>
   <object id="87" name="exclamationMark" x="799.5" y="3691.33" width="41.5" height="32.5"/>
   <object id="88" name="solid" x="1603.33" y="3614.33" width="32.6667" height="197.333"/>
-  <object id="90" name="door1" type="door" x="1664.33" y="3744.33" width="62.6667" height="62.6667">
+  <object id="90" name="door1" type="action" x="1664.33" y="3744.33" width="62.6667" height="62.6667">
    <properties>
+    <property name="class" value="door"/>
     <property name="to" type="object" value="48"/>
    </properties>
   </object>
