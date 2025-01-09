@@ -3,7 +3,7 @@
 //#include "Menu.h"
 
 
-int main(menu(office_patformer))
+int main()
 {
     unsigned int windowWidth{1280};
     unsigned int windowHeight(720);

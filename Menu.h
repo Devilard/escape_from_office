@@ -6,15 +6,12 @@
 #include <list>
 
 #include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
 
-#include "level.h"
-#include "Entity.h"
-#include "Enemy.h"
-#include "Mission.h"
+
+
 #include "GameView.h"
-#include "Player.h"
 
+//Не работает, необходимо добавить в main.cpp
 
 using namespace sf;
 
