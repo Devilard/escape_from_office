@@ -1,8 +1,9 @@
 #include <SFML/Graphics.hpp>
 #include "Game.h"
+//#include "Menu.h"
 
 
-int main()
+int main(menu(office_patformer))
 {
     unsigned int windowWidth{1280};
     unsigned int windowHeight(720);
@@ -15,4 +16,5 @@ int main()
     game->Loop(window, windowWidth, windowHeight);
 
     return 0;    
+
 }

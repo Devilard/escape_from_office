@@ -15,6 +15,7 @@
 #include "Mission.h"
 #include "GameView.h"
 #include "Player.h"
+#include "Menu.h"
 
 class Game
 {
@@ -140,6 +141,8 @@ public:
 		enemies = currentLevel->getObjectsByName("easyEnemy");
 		users = currentLevel->getObjectsByName("User");
 		enemiesA = currentLevel->getObjectsByName("angelEnemy");
+
+
 
 
 		//Filling the enemy list
@@ -433,6 +436,8 @@ private:
 	}
 
 
+
 };
+
 
 #endif
