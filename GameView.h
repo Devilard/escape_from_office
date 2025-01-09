@@ -28,22 +28,22 @@ public:
 	{
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		{
-			view->move(0.1 * time, 0);
+			view->move(0.1f * time, 0.0f);
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
-			view->move(0, 0.1 * time);
+			view->move(0.0f, 0.1f * time);
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		{
-			view->move(-0.1 * time, 0);
+			view->move(-0.1f * time, 0.0f);
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
-			view->move(0, -0.1 * time);
+			view->move(0.0f, -0.1f * time);
 		}
 
 		return *view;

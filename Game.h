@@ -235,7 +235,7 @@ public:
 		std::ostringstream playerHealthString;
 		playerHealthString << getPlayer().health;
 		std::ostringstream missionTextString;
-		missionTextString << mission->getTextMission(mission->getCurrentMisson(getPlayer().getPlayerCoordinateX()));
+		missionTextString << mission->getTextMission(mission->getCurrentMisson(static_cast<int>(getPlayer().getPlayerCoordinateX())));
 		missionText->setString("Çהמנמגüו: " + playerHealthString.str() + "\n" + missionTextString.str());
 		missionSprite->setPosition(getGameView()->view->getCenter().x + 115, getGameView()->view->getCenter().y - 130);
 		isShowMission = false;
@@ -258,7 +258,7 @@ public:
 
 	void Loop(sf::RenderWindow& window, unsigned int windowWidth, unsigned int windowHeight)
 	{
-		getGameView()->view->reset(sf::FloatRect(0, 0, windowWidth, windowHeight));
+		getGameView()->view->reset(sf::FloatRect(0.0f, 0.0f, static_cast<float>(windowWidth), static_cast<float>(windowHeight)));
 		std::list<Entity*>::iterator it;
 		float currentFrame{ 0.0f };
 		sf::Clock clock;
