@@ -405,6 +405,12 @@ public:
 
 		while (isMenu)
 		{
+			Event event;
+			while (window.pollEvent(event))
+			{
+				if (event.type == Event::Closed)
+					window.close();
+			}
 			menu1.setColor(Color::White);
 			menu2.setColor(Color::White);
 			menu3.setColor(Color::White);
