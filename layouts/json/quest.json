@@ -1,0 +1,12 @@
+{
+  "quests": [
+    {
+      "name": "FuckingMouse",
+      "description": "Замени мышку пользователю"
+    },
+    {
+      "name": "Empty printer",
+      "description": "Замени картридж в принтере"
+    }
+  ]
+}

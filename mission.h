@@ -2,10 +2,18 @@
 #define _MISSION_H_
 
 #include <string>
+#include <nlohmann/json.hpp>
+#include <fstream>
+#include <vector>
+
+#include "Quest.h"
+
+using nlohmann::json;
 
 class Mission
 {
 	int mission = 0;
+	std::vector<Quest*> quests;
 public:
 
 	int getCurrentMisson(int x)
@@ -32,6 +40,35 @@ public:
 		}
 
 		return missionText;
+	}
+
+	void readQuestFromJson()
+	{
+		json jsonQuests;
+		std::ifstream file("layouts/json/quest.json");
+
+
+		try
+		{
+			jsonQuests = json::parse(file);
+			std::string name = jsonQuests["quests"][0]["name"];
+			std::string description = jsonQuests["quests"][0]["description"];
+
+			for (auto j : jsonQuests)
+			{
+				quests.push_back(new Quest(name, description));
+			}
+		}
+		catch (json::parse_error& ex)
+		{
+			std::cerr << "parse error at byte " << ex.byte << std::endl;
+		}
+
+		file.close();
+	}
+	std::vector<Quest*> getAllQuests()
+	{
+		return quests;
 	}
 };
 

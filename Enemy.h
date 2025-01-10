@@ -2,7 +2,7 @@
 #define _ENEMY_H_
 
 #include "Entity.h"
-
+#include "Quest.h"
 
 class Enemy : public Entity
 {
@@ -11,6 +11,8 @@ public:
 	sf::Texture* exMarkTexture;
 	sf::Sprite* exMarkSprite;
 	std::string questName;
+	
+
 	Enemy(sf::Image& image, sf::String Name, float X, float Y, float W, float H) : Entity(image, Name, X, Y, W, H) {};
 	Enemy(sf::Image& image, sf::String Name, TileMap& lvl, float X, float Y,  float W, float H, std::string qn, int ID) : Entity(image, Name, X, Y, W, H)
 	{
@@ -18,6 +20,7 @@ public:
 		questName = qn;
 		if (questName != "")
 		{
+
 			isHaveQuest = true;
 		}
 

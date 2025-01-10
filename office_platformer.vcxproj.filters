@@ -45,6 +45,12 @@
     <ClInclude Include="Menu.h">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="Quest.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="libs\nlohmann\json.hpp">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source files">
@@ -53,5 +59,13 @@
     <Filter Include="Header files">
       <UniqueIdentifier>{a5beb166-9435-4b1b-8a82-24c620c3c4fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource files">
+      <UniqueIdentifier>{d6a7fd0a-4777-4613-bedb-22077f49b1c5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="layouts\json\quest.json">
+      <Filter>Resource files</Filter>
+    </None>
   </ItemGroup>
 </Project>

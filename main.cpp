@@ -3,6 +3,7 @@
 
 
 
+
 int main()
 {
     unsigned int windowWidth{1280};

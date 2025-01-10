@@ -146,7 +146,7 @@ public:
 		enemiesA = currentLevel->getObjectsByName("angelEnemy");
 
 
-
+		mission->readQuestFromJson();
 
 		//Filling the enemy list
 		for (int i = 0; i < enemies.size(); i++)
