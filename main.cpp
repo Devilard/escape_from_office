@@ -10,8 +10,11 @@ int main()
 
     Game* game = new Game();
     game->loadAll();
+    
 
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Escape from Office");
+    window.setFramerateLimit(60);
+    game->showMenu(window);
 
     game->Loop(window, windowWidth, windowHeight);
 

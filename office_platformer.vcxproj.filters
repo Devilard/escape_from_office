@@ -42,6 +42,9 @@
     <ClInclude Include="Player.h">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source files">
