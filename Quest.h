@@ -12,8 +12,7 @@ public:
 	enum class statuses {wait, done, wait_execution, taken};
 	statuses status;
 	
-	Quest(std::string qn = "", std::string des = "") : questName{qn}, questDescription{des}, status{statuses::wait}
-	{}
+	Quest(std::string qn = "", std::string des = "");
 };
 
 #endif
