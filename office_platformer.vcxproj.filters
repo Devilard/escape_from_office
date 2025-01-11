@@ -10,6 +10,9 @@
     <ClCompile Include="libs\tinyxml2\tinyxml2.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="iconvlite.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libs\tinyxml2\tinyxml2.h">
@@ -49,6 +52,9 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="libs\nlohmann\json.hpp">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="iconvlite.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>

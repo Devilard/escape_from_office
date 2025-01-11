@@ -2,6 +2,8 @@
 #define _MENU_H_
 
 #include <SFML/Graphics.hpp>
+#include <Windows.h>
+#include "iconvlite.h"
 
 class Menu
 {
@@ -9,10 +11,10 @@ public:
 	Menu() = default;
 
 	void menu(sf::RenderWindow& window, sf::Font& font) {
-
-		sf::Text* menuStartGame = new sf::Text("Начать игру", font, 30);
-		sf::Text* menuAbout = new sf::Text("Об Игре", font, 30);
-		sf::Text* menuExit = new sf::Text("Выход", font, 30);
+		
+		sf::Text* menuStartGame = new sf::Text(utf2cp("РќР°С‡Р°С‚СЊ РёРіСЂСѓ"), font, 30);
+		sf::Text* menuAbout = new sf::Text(utf2cp("РћР± РРіСЂРµ"), font, 30);
+		sf::Text* menuExit = new sf::Text(utf2cp("Р’С‹С…РѕРґ"), font, 30);
 
 		sf::Texture aboutTexture, menuBackground;
 		aboutTexture.loadFromFile("layouts/img/menu/about.png");
@@ -91,6 +93,7 @@ public:
 			window.display();
 		}
 	}
+
 };
 
 #endif

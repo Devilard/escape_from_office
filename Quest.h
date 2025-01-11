@@ -9,8 +9,10 @@ class Quest
 public:
 	std::string questName;
 	std::string questDescription;
-
-	Quest(std::string qn, std::string des) : questName{ qn }, questDescription{ des }
+	enum class statuses {wait, done, wait_execution, taken};
+	statuses status;
+	
+	Quest(std::string qn = "", std::string des = "") : questName{qn}, questDescription{des}, status{statuses::wait}
 	{}
 };
 

@@ -2,11 +2,13 @@
   "quests": [
     {
       "name": "FuckingMouse",
-      "description": "Замени мышку пользователю"
+      "description": "Найти и заменить мышь",
+      "status":  "wait"
     },
     {
       "name": "Empty printer",
-      "description": "Замени картридж в принтере"
+      "description": "Заменить картридж",
+      "status": "wait"
     }
   ]
 }

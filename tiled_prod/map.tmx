@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="80" height="120" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="94">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="80" height="120" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="95">
  <tileset firstgid="1" source="tile_set_map.tsx"/>
  <tileset firstgid="257" source="tile_set_map2.tsx"/>
  <layer id="1" name="Слой тайлов 1" width="80" height="120">
@@ -207,5 +207,6 @@
     <property name="QuestName" value="Ebat"/>
    </properties>
   </object>
+  <object id="94" name="easyEnemy" x="1122" y="3694.5" width="200" height="97"/>
  </objectgroup>
 </map>

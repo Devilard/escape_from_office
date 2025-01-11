@@ -8,6 +8,8 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <Windows.h>
+#include "iconvlite.h"
 
 #include "level.h"
 #include "Entity.h"
@@ -16,6 +18,7 @@
 #include "GameView.h"
 #include "Player.h"
 #include "Menu.h"
+#include "NPC.h"
 
 
 class Game
@@ -174,11 +177,11 @@ public:
 			std::string questName = users[i].GetPropertyString("QuestName");
 			if (questName != "")
 			{
-				entities.push_back(new Enemy(*userImg, "User", *currentLevel, users[i].rect.left, users[i].rect.top, 64, 64, questName, users[i].id));
+				entities.push_back(new NPC(*userImg, "User", *currentLevel, users[i].rect.left, users[i].rect.top, 64, 64, questName, users[i].id, mission));
 			}
 			else
 			{
-				entities.push_back(new Enemy(*userImg, "User", *currentLevel, users[i].rect.left, users[i].rect.top, 64, 64, "", users[i].id));
+				entities.push_back(new NPC(*userImg, "User", *currentLevel, users[i].rect.left, users[i].rect.top, 64, 64, "", users[i].id, mission));
 			}
 			
 		}
@@ -189,12 +192,6 @@ public:
 			entities.push_back(new Enemy(*exclamationMarkImg, "User", *currentLevel, mark[i].rect.left, mark[i].rect.top, 32, 32, questName, mark[i].id));
 		}
 
-		/*
-		* if( entities[i].name == "user1")
-		* {
-		*	entities[i].setQust(Quest1337);
-		* }
-		*/
 	}
 
 	void showMenu(sf::RenderWindow& window)
@@ -247,7 +244,16 @@ public:
 		playerHealthString << getPlayer().health;
 		std::ostringstream missionTextString;
 		missionTextString << mission->getTextMission(mission->getCurrentMisson(static_cast<int>(getPlayer().getPlayerCoordinateX())));
-		missionText->setString("Çäîðîâüå: " + playerHealthString.str() + "\n" + missionTextString.str());
+		//missionText->setString("Â«Ð´Ð¾Ñ€Ð¾Ð²ÑŒÐµ: " + playerHealthString.str() + "\n" + missionTextString.str());
+		
+		if (!getPlayer().questList.empty())
+		{
+			missionText->setString(getPlayer().questList[0].questName + "\n" + getPlayer().questList[0].questDescription);
+		}
+		else
+		{
+			missionText->setString("");
+		}
 		missionSprite->setPosition(getGameView()->view->getCenter().x + 115, getGameView()->view->getCenter().y - 130);
 		isShowMission = false;
 	}
@@ -379,7 +385,7 @@ public:
 		std::ostringstream playerScoreString;
 		playerScoreString << p.health;
 
-		text.setString("Ñîáðàííî êàìíåé " + playerScoreString.str());
+		text.setString("â€”Ð¾Ð±Ñ€Ð°Ð½Ð½Ð¾ ÐºÐ°Ð¼Ð½ÐµÐ¹ " + playerScoreString.str());
 		text.setPosition(view.getCenter().x - 200, view.getCenter().y - 200);
 		*/
 

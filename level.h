@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <SFML/Graphics.hpp>
 #include "./libs/tinyxml2/tinyxml2.h"
 #include <iostream>

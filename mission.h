@@ -5,6 +5,10 @@
 #include <nlohmann/json.hpp>
 #include <fstream>
 #include <vector>
+#include <map>
+#include <Windows.h>
+#include "iconvlite.h"
+
 
 #include "Quest.h"
 
@@ -13,7 +17,7 @@ using nlohmann::json;
 class Mission
 {
 	int mission = 0;
-	std::vector<Quest*> quests;
+	std::map<std::string, Quest*> quests;
 public:
 
 	int getCurrentMisson(int x)
@@ -34,9 +38,9 @@ public:
 
 		switch (mission)
 		{
-		case 0: missionText = "\nНачальный Этап и \nинструкции к игре"; break;
-		case 1: missionText = "\nЗадание первое\nНайти листок и ручку"; break;
-		case 2: missionText = "\nЗадание второе\nПомочь пользователю"; break;
+		case 0: missionText = "\nРќР°С‡Р°Р»СЊРЅС‹Р№ Р­С‚Р°Рї Рё \nРёРЅСЃС‚СЂСѓРєС†РёРё Рє РёРіСЂРµ"; break;
+		case 1: missionText = "\nР—Р°РґР°РЅРёРµ РїРµСЂРІРѕРµ\nРќР°Р№С‚Рё Р»РёСЃС‚РѕРє Рё СЂСѓС‡РєСѓ"; break;
+		case 2: missionText = "\nР—Р°РґР°РЅРёРµ РІС‚РѕСЂРѕРµ\nРџРѕРјРѕС‡СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЋ"; break;
 		}
 
 		return missionText;
@@ -51,12 +55,16 @@ public:
 		try
 		{
 			jsonQuests = json::parse(file);
-			std::string name = jsonQuests["quests"][0]["name"];
-			std::string description = jsonQuests["quests"][0]["description"];
-
-			for (auto j : jsonQuests)
+			
+			for (int i = 0; i < jsonQuests["quests"].size(); i++)
 			{
-				quests.push_back(new Quest(name, description));
+				
+				std::string name = trim(jsonQuests["quests"][i]["name"]);
+				name = utf2cp(name);
+			
+				std::string description = trim(jsonQuests["quests"][i]["description"]);
+				description = utf2cp(description);
+				quests[name] = new Quest(name, description);
 			}
 		}
 		catch (json::parse_error& ex)
@@ -66,10 +74,34 @@ public:
 
 		file.close();
 	}
-	std::vector<Quest*> getAllQuests()
+
+	Quest getQuestByName(std::string questName)
+	{
+		if (quests.contains(questName))
+		{
+			return *quests[questName];
+		}
+		else
+		{
+			return Quest();
+		}
+		
+	}
+
+	std::map<std::string, Quest*> getAllQuests()
 	{
 		return quests;
 	}
+private:
+
+	std::string trim(const std::string& source) {
+		std::string s(source);
+		s.erase(0, s.find_first_not_of(" \n\r\t"));
+		s.erase(s.find_last_not_of(" \n\r\t") + 1);
+		return s;
+	}
+
+
 };
 
 

@@ -8,7 +8,8 @@
 #include "Bullet.h"
 #include "GameView.h"
 #include "Enemy.h"
-
+#include "NPC.h"
+#include "Mission.h"
 
 using sf::Keyboard;
 
@@ -24,6 +25,8 @@ public:
     std::vector<Object> action_objects;
     bool isActionKeyPressed;
     TileMap levelCopy;
+    std::vector<Quest> questList;
+
     Player(sf::Image& image, sf::String Name, TileMap& lev, float X, float Y, float W, float H) : Entity(image, Name, X, Y, W, H)
     {
         
@@ -106,7 +109,7 @@ public:
         
         sprite.setPosition(x + w / 2, y + h / 2); 
         if (health <= 0) { life = false; }
-        dy = dy + 0.0015f * time; //äåëàåì ïðèòÿæåíèå ê çåìëå
+        dy = dy + 0.0015f * time; //Ð´ÐµÐ»Ð°ÐµÐ¼ Ð¿Ñ€Ð¸Ñ‚ÑÐ¶ÐµÐ½Ð¸Ðµ Ðº Ð·ÐµÐ¼Ð»Ðµ
         if (!isMove) { speed = 0; }
         if (health <= 0) { life = false; speed = 0; }
         
@@ -175,8 +178,8 @@ public:
                             {
                                 if ((*it2)->isHaveQuest)
                                 {
-                                    std::cout << "i can take the quest " << static_cast<Enemy&>(*(*it2)).questName << " NPC ID " << (*it2)->id << "\n";
-
+                                    std::cout << "i can take the quest " << static_cast<NPC&>(*(*it2)).questName << " NPC ID " << (*it2)->id << "\n";
+                                    questList.push_back(static_cast<NPC&>(*(*it2)).getQuest());
                                     (*it2)->isHaveQuest = false;
                                                                         
                                     break;

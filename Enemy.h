@@ -2,36 +2,22 @@
 #define _ENEMY_H_
 
 #include "Entity.h"
-#include "Quest.h"
 
 class Enemy : public Entity
 {
 public:
 	float currentFrame{0.0f};
-	sf::Texture* exMarkTexture;
-	sf::Sprite* exMarkSprite;
-	std::string questName;
+
 	
 
-	Enemy(sf::Image& image, sf::String Name, float X, float Y, float W, float H) : Entity(image, Name, X, Y, W, H) {};
+	
 	Enemy(sf::Image& image, sf::String Name, TileMap& lvl, float X, float Y,  float W, float H, std::string qn, int ID) : Entity(image, Name, X, Y, W, H)
 	{
 		id = ID;
-		questName = qn;
-		if (questName != "")
-		{
-
-			isHaveQuest = true;
-		}
-
-		exMarkTexture = new sf::Texture;
-		exMarkTexture->loadFromFile("layouts/img/exclamation_mark.png");
-		exMarkSprite = new sf::Sprite;
-		exMarkSprite->setTexture(*exMarkTexture);
-		exMarkSprite->setTextureRect(sf::IntRect(12, 0, 7, 28));
-		
-		obj = lvl.getObjectsByName("solid");
 		currentFrame = 0.0f;
+
+		obj = lvl.getObjectsByName("solid");
+		
 		if (name == "EasyEnemy")
 		{
 			sprite.setTextureRect(sf::IntRect(0, 0, static_cast<int>(w), static_cast<int>(h)));
@@ -41,10 +27,6 @@ public:
 			sprite.setTextureRect(sf::IntRect(((76 * (int)currentFrame)), 0, -78, 75));
 		}
 		
-		if (name == "User")
-		{
-			sprite.setTextureRect(sf::IntRect(0, 0, static_cast<int>(w), static_cast<int>(h)));
-		}
 	}
 
 	void checkCollisionWithMap(float Dx, float Dy)
@@ -67,30 +49,15 @@ public:
 
 	void update(float time) override
 	{
-		if (name == "EasyEnemy" || name == "User")
-		{
-			if (name == "User")
-			{
-				currentFrame += 0.005f * time;
-				if (currentFrame >= 4) currentFrame -= 3;
-				sprite.setTextureRect(sf::IntRect(((30 * (int)currentFrame) ), 1, 30, 72));
-
-			}
-			if (name == "EasyEnemy")
-			{
-				currentFrame += 0.005f * time;
-				if (currentFrame >= 4) currentFrame -= 3;
-				sprite.setTextureRect(sf::IntRect(((78 * (int)currentFrame)), 0, -78, 75));
-			}
-
-			x += dx * time;
-			checkCollisionWithMap(dx, 0);
-			sprite.setPosition(x + w / 2, y + h / 2);
-			exMarkSprite->setPosition(x + 15, y - 40);
+		currentFrame += 0.005f * time;
+		if (currentFrame >= 4) currentFrame -= 3;
+		sprite.setTextureRect(sf::IntRect(((78 * (int)currentFrame)), 0, -78, 75));
+	
+		x += dx * time;
+		checkCollisionWithMap(dx, 0);
+		sprite.setPosition(x + w / 2, y + h / 2);
 			
-			if (health <= 0) { life = false; death(time);}
-
-		}
+		if (health <= 0) { life = false; death(time);}
 	}
 
 	void death(float time)
@@ -101,16 +68,6 @@ public:
 		{
 			isAnimationDeathEnd = true;
 		}
-	}
-
-	void setQuest()
-	{
-		
-	}
-
-	sf::Sprite& getExMark()
-	{
-		return *exMarkSprite;
 	}
 };
 
