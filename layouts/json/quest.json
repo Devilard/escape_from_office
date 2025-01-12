@@ -2,13 +2,20 @@
   "quests": [
     {
       "name": "FuckingMouse",
-      "description": "Найти и заменить мышь",
-      "status":  "wait"
+      "description": "Найти на карте мышь изаменить её",
+      "status": "wait",
+      "type": "collect",
+      "collect_item_name": "mouse",
+      "amount":  1
+
     },
     {
       "name": "Empty printer",
       "description": "Заменить картридж",
-      "status": "wait"
+      "status": "wait",
+      "type": "collect",
+      "collect_item_name": "cartridge",
+      "amount": 1
     }
   ]
 }

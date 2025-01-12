@@ -19,6 +19,7 @@
 #include "Player.h"
 #include "Menu.h"
 #include "NPC.h"
+#include "QuestItem.h"
 
 class Game
 {
@@ -32,15 +33,13 @@ public:
 	Player* player;
 	sf::Image* heroImg;
 	sf::Image* bulletImg;
-	sf::Image* exclamationMarkImg;
-	sf::Image* hardEnemyImg;
 	sf::Image* easyEnemyImg;
 	sf::Image* angelEnemyImg;
+	sf::Image* questItemImg;
 	std::vector<Object> enemiesA;
-	std::vector<Object> enemiesH;
 	std::vector<Object> enemies;
 	std::vector<Object> users;
-	std::vector<Object> mark;
+	std::vector<Object> collectables;
 	sf::Image* userImg;
 	sf::Font* font;
 	sf::Text* missionText;
@@ -54,6 +53,7 @@ public:
 	Game();
 	void loadAll();
 	void showMenu(sf::RenderWindow& window) { menu->menu(window, *font); }
+	void fillEntitiesList();
 	void changeLevel(int nl);
 	TileMap& getCurrentLevel() { return *currentLevel; }
 	Object& getPlayerObject() { return *PlayerObject; }

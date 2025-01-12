@@ -26,7 +26,7 @@ public:
     std::vector<Object> action_objects;
     bool isActionKeyPressed;
     TileMap levelCopy;
-    std::vector<Quest> questList;
+    std::map<std::string, Quest> questList;
     
     Player(sf::Image& image, sf::String Name, TileMap& lev, float X, float Y, float W, float H);
     sf::Sprite& getExMark();

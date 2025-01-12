@@ -3,13 +3,14 @@
 
 #include <string>
 
+enum class statuses { wait, done, wait_execution, taken };
 
 class Quest
 {
 public:
 	std::string questName;
 	std::string questDescription;
-	enum class statuses {wait, done, wait_execution, taken};
+	
 	statuses status;
 	
 	Quest(std::string qn = "", std::string des = "");

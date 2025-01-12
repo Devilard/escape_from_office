@@ -17,11 +17,10 @@ Game::Game()
 	bulletImg = new sf::Image();
 	easyEnemyImg = new sf::Image;
 	angelEnemyImg = new sf::Image;
-	hardEnemyImg = new sf::Image;
-	exclamationMarkImg = new sf::Image;
 	userImg = new sf::Image;
 	isShowMission = true;
 	levelNumber = 1;
+	questItemImg = new sf::Image;
 }
 
 void Game::loadAll()
@@ -39,7 +38,6 @@ void Game::loadAll()
 	missionText->setString("");
 	missionText->setCharacterSize(20);
 	missionText->setFont(*font);
-	sf::Color redColor;
 	missionText->setFillColor(sf::Color::Red);
 
 	//Load mission background image, texture, sprite
@@ -51,13 +49,6 @@ void Game::loadAll()
 	missionSprite->setScale(0.35f, 0.35f);
 
 	changeLevel(1);
-
-	//Load exclamation_mark
-	exclamationMarkImg->loadFromFile("layouts/img/exclamation_mark.png");
-	exclamationMarkImg->createMaskFromColor(sf::Color(255, 0, 0));
-
-	mark = currentLevel->getObjectsByName("exclamationMark");
-
 
 	//Load hero
 	heroImg->loadFromFile("layouts/img/office_man.png");
@@ -74,20 +65,26 @@ void Game::loadAll()
 	easyEnemyImg->loadFromFile("layouts/img/shamaich2.png");
 	easyEnemyImg->createMaskFromColor(sf::Color(255, 0, 0));
 
-	hardEnemyImg->loadFromFile("layouts/img/shamaich2.png");
-	hardEnemyImg->createMaskFromColor(sf::Color(255, 0, 0));
-
 	angelEnemyImg->loadFromFile("layouts/img/angel.png");
 	angelEnemyImg->createMaskFromColor(sf::Color(255, 0, 0));
 
-	enemiesH = currentLevel->getObjectsByName("hardEnemy");
+	questItemImg->loadFromFile("layouts/img/qa_mouse.png");
+
 	enemies = currentLevel->getObjectsByName("easyEnemy");
 	users = currentLevel->getObjectsByName("User");
 	enemiesA = currentLevel->getObjectsByName("angelEnemy");
+	collectables = currentLevel->getObjectsByType("collectable");
 
+	
 
 	mission->readQuestFromJson();
 
+	fillEntitiesList();
+
+}
+
+void Game::fillEntitiesList()
+{
 	//Filling the enemy list
 	for (int i = 0; i < enemies.size(); i++)
 	{
@@ -123,12 +120,10 @@ void Game::loadAll()
 
 	}
 
-	for (int i = 0; i < mark.size(); i++)
+	for (int i = 0; i < collectables.size(); i++)
 	{
-		std::string questName = "";
-		entities.push_back(new Enemy(*exclamationMarkImg, "User", *currentLevel, mark[i].rect.left, mark[i].rect.top, 32, 32, questName, mark[i].id));
+		entities.push_back(new QuestItem(*questItemImg, "questItem", *currentLevel, collectables[i].rect.left, collectables[i].rect.top, 16, 16));
 	}
-
 }
 
 void Game::changeLevel(int nl)
@@ -169,7 +164,10 @@ void Game::showMission()
 
 	if (!getPlayer().questList.empty())
 	{
-		missionText->setString(getPlayer().questList[0].questName + "\n" + getPlayer().questList[0].questDescription);
+		std::map<std::string, Quest>::iterator it;
+		it = getPlayer().questList.begin();
+		
+		missionText->setString(it->second.questName + "\n" + it->second.questDescription);
 	}
 	else
 	{
@@ -324,6 +322,7 @@ void Game::entitiesUpdate(float time)
 {
 	std::list<Entity*>::iterator it;
 	std::list<Entity*>::iterator it2;
+
 	for (it = entities.begin(); it != entities.end();)
 	{
 		Entity* b = *it;
@@ -337,19 +336,6 @@ void Game::entitiesUpdate(float time)
 
 	for (it = entities.begin(); it != entities.end(); it++)
 	{
-		if ((*it)->getRect().intersects(player->getRect()))
-		{
-			if ((*it)->name == "EasyEnemy") {
-
-				if ((player->dy > 0) && (player->onGround == false)) { (*it)->dx = 0; player->dy = -0.2f; (*it)->health = 0; }
-				else {
-
-					player->dx = -10.0f;
-
-					player->health -= 5;
-				}
-			}
-		}
 
 		for (it2 = entities.begin(); it2 != entities.end(); it2++)
 		{
@@ -364,5 +350,48 @@ void Game::entitiesUpdate(float time)
 				}
 			}
 		}
+	}
+
+	bool isCollect = false;
+
+	for (it = entities.begin(); it != entities.end();)
+	{
+		isCollect = false;
+
+		if ((*it)->getRect().intersects(player->getRect()))
+		{
+			if ((*it)->name == "EasyEnemy")
+			{
+
+				if ((player->dy > 0) && (player->onGround == false)) { (*it)->dx = 0; player->dy = -0.2f; (*it)->health = 0; }
+				else {
+
+					player->dx = -10.0f;
+
+					player->health -= 5;
+				}
+			}
+
+			if ((*it)->name == "questItem")
+			{
+				std::string qn = static_cast<QuestItem&>(*(*it)).questName;
+				if (player->questList[qn].status == statuses::taken)
+				{
+					player->questList[qn].status = statuses::wait_execution;
+					isCollect = true;
+				}
+			}
+
+		}
+
+		if (isCollect == false)
+		{
+			it++;
+		}
+		else
+		{
+			it = entities.erase(it);
+		}
+
 	}
 }

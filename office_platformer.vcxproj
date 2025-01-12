@@ -161,6 +161,7 @@
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Quest.cpp" />
+    <ClCompile Include="QuestItem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
@@ -176,6 +177,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="GameView.h" />
     <ClInclude Include="Quest.h" />
+    <ClInclude Include="QuestItem.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="layouts\json\quest.json" />

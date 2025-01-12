@@ -147,7 +147,8 @@ void Player::action(std::list<Entity*>& entities)
                             if ((*it2)->isHaveQuest)
                             {
                                 std::cout << "i can take the quest " << static_cast<NPC&>(*(*it2)).questName << " NPC ID " << (*it2)->id << "\n";
-                                questList.push_back(static_cast<NPC&>(*(*it2)).getQuest());
+                                questList[static_cast<NPC&>(*(*it2)).getQuest().questName] = static_cast<NPC&>(*(*it2)).getQuest();
+                                questList[static_cast<NPC&>(*(*it2)).getQuest().questName].status = statuses::taken;
                                 (*it2)->isHaveQuest = false;
 
                                 break;
