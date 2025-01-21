@@ -150,6 +150,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="EntityHandler.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameView.cpp" />
     <ClCompile Include="iconvlite.cpp" />
@@ -161,12 +162,16 @@
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Quest.cpp" />
+    <ClCompile Include="QuestDialog.cpp" />
+    <ClCompile Include="QuestHandler.cpp" />
     <ClCompile Include="QuestItem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="CollisionEntity.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="EntityHandler.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="iconvlite.h" />
     <ClInclude Include="level.h" />
@@ -177,7 +182,10 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="GameView.h" />
     <ClInclude Include="Quest.h" />
+    <ClInclude Include="QuestDialog.h" />
+    <ClInclude Include="QuestHandler.h" />
     <ClInclude Include="QuestItem.h" />
+    <ClInclude Include="state.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="layouts\json\quest.json" />

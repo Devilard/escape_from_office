@@ -1,6 +1,7 @@
 #include "NPC.h"
 
-NPC::NPC(sf::Image& image, sf::String Name, TileMap& lvl, float X, float Y, int W, int H, std::string qn, int ID, Mission* missions)
+NPC::NPC(sf::Image& image, sf::String Name, TileMap& lvl, float X, float Y, int W, int H,
+	std::string qn, int ID, Mission* missions, QuestHandler* questHandelr)
 	: Entity(image, Name, X, Y, W, H)
 {
 
@@ -10,17 +11,11 @@ NPC::NPC(sf::Image& image, sf::String Name, TileMap& lvl, float X, float Y, int 
 	exMarkSprite->setTexture(*exMarkTexture);
 	exMarkSprite->setTextureRect(sf::IntRect(12, 0, 7, 28));
 	sprite.setTextureRect(sf::IntRect(0, 0, static_cast<int>(w), static_cast<int>(h)));
+
 	obj = lvl.getObjectsByName("solid");
+
 	currentFrame = 0.0f;
 	id = ID;
-
-	questName = qn;
-	if (questName != "")
-	{
-
-		quest = missions->getQuestByName(questName);
-		isHaveQuest = true;
-	}
 
 }
 
@@ -54,4 +49,12 @@ void NPC::update(float time)
 	exMarkSprite->setPosition(x + 15, y - 40);
 
 
+}
+
+void NPC::addQuest(std::string questName)
+{
+	if (questName != "")
+	{
+		questList.push_back(questName);
+	}
 }

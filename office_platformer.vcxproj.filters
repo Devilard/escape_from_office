@@ -46,6 +46,15 @@
     <ClCompile Include="QuestItem.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="QuestHandler.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityHandler.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="QuestDialog.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libs\tinyxml2\tinyxml2.h">
@@ -88,6 +97,21 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="QuestItem.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestHandler.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityHandler.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionEntity.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestDialog.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="state.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>

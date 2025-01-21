@@ -20,7 +20,10 @@
 #include "Menu.h"
 #include "NPC.h"
 #include "QuestItem.h"
-
+#include "QuestHandler.h"
+#include "EntityHandler.h"
+#include "CollisionEntity.h"
+#include "state.h"
 class Game
 {
 public:
@@ -49,6 +52,10 @@ public:
 	bool isShowMission;
 	Mission* mission;
 	int levelNumber;
+
+	QuestHandler* questHandler;
+	EntityHandler* entityHandler;
+	
 
 	Game();
 	void loadAll();

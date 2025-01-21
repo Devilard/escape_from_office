@@ -14,6 +14,9 @@ Player::Player(sf::Image& image, sf::String Name, TileMap& lev, float X, float Y
     }
     buffer.loadFromFile("sound/otskok-myacha.ogg");
     sound.setBuffer(buffer);
+
+    questDialog = new QuestDialog();
+    questDialog->init();
 }
 
 sf::Sprite& Player::getExMark()
@@ -25,34 +28,39 @@ sf::Sprite& Player::getExMark()
 
 void Player::control(float time)
 {
-    state = stateObject::stay;
 
-    if (Keyboard::isKeyPressed(Keyboard::Left) || Keyboard::isKeyPressed(Keyboard::A)) {
-        state = stateObject::left;
-        speed = 0.1f;
-        currentFrame += 0.005f * time;
-        if (currentFrame > 5) currentFrame -= 3;
-        sprite.setTextureRect(sf::IntRect(((36 * (int)currentFrame)), 0, -36, 74));
+    if (state != stateObject::cant_move)
+    {
+        state = stateObject::stay;
+
+
+
+        if (Keyboard::isKeyPressed(Keyboard::Left) || Keyboard::isKeyPressed(Keyboard::A)) {
+            state = stateObject::left;
+            speed = 0.1f;
+            currentFrame += 0.005f * time;
+            if (currentFrame > 5) currentFrame -= 3;
+            sprite.setTextureRect(sf::IntRect(((36 * (int)currentFrame)), 0, -36, 74));
+        }
+
+        if (Keyboard::isKeyPressed(Keyboard::Right) || Keyboard::isKeyPressed(Keyboard::D)) {
+            state = stateObject::right;
+            speed = 0.1f;
+            currentFrame += 0.005f * time;
+            if (currentFrame > 4) currentFrame -= 3;
+            sprite.setTextureRect(sf::IntRect((36 * (int)currentFrame), 0, 36, 74));
+        }
+
+        if ((Keyboard::isKeyPressed(Keyboard::Space)) && (onGround)) {
+            state = stateObject::jump; dy = -0.78f; onGround = false;
+
+        }
+
+        if (Keyboard::isKeyPressed(Keyboard::Down) || Keyboard::isKeyPressed(Keyboard::S)) {
+            state = stateObject::down;
+
+        }
     }
-
-    if (Keyboard::isKeyPressed(Keyboard::Right) || Keyboard::isKeyPressed(Keyboard::D)) {
-        state = stateObject::right;
-        speed = 0.1f;
-        currentFrame += 0.005f * time;
-        if (currentFrame > 4) currentFrame -= 3;
-        sprite.setTextureRect(sf::IntRect((36 * (int)currentFrame), 0, 36, 74));
-    }
-
-    if ((Keyboard::isKeyPressed(Keyboard::Space)) && (onGround)) {
-        state = stateObject::jump; dy = -0.78f; onGround = false;
-
-    }
-
-    if (Keyboard::isKeyPressed(Keyboard::Down) || Keyboard::isKeyPressed(Keyboard::S)) {
-        state = stateObject::down;
-
-    }
-
 
 }
 
@@ -68,6 +76,7 @@ void Player::update(float time)
     case stateObject::down: break;
     case stateObject::jump: break;
     case stateObject::stay: dx = speed; break;
+    case stateObject::cant_move: dx = 0; break;
     }
 
 
@@ -108,28 +117,27 @@ void Player::checkCollisionWithMap(float Dx, float Dy)
     }
 }
 
-void Player::shoot(std::list<Entity*>& entities, sf::Vector2f pos, sf::Image* bulletImg, TileMap* currentLevel)
+void Player::shoot(EntityHandler* entityHandler, sf::Vector2f pos, sf::Image* bulletImg, TileMap* currentLevel)
 {
     sound.play();
-    entities.push_back(new Bullet(*bulletImg, "Bullet", *currentLevel, x, y, 16, 16, pos));
+    entityHandler->entities.push_back(new Bullet(*bulletImg, "Bullet", *currentLevel, x, y, 16, 16, pos));
 }
 
-void Player::action(std::list<Entity*>& entities)
+void Player::action(EntityHandler* entityHandler, GameView* v)
 {
-    std::vector<Object>::iterator it;
-    std::list<Entity*>::iterator it2;
-    if (state == stateObject::stay)
+
+    if (state == stateObject::stay || state == stateObject::cant_move)
     {
-        for (it = action_objects.begin(); it != action_objects.end(); it++)
+        for (auto object_it = action_objects.begin(); object_it != action_objects.end(); object_it++)
         {
 
-            if (getRect().intersects(it->rect))
+            if (getRect().intersects(object_it->rect))
             {
-                if (it->properties["class"] == "door")
+                if (object_it->properties["class"] == "door")
                 {
-                    if (it->properties["to"] != "")
+                    if (object_it->properties["to"] != "")
                     {
-                        Object To = levelCopy.getObjectById(std::stoi(it->GetPropertyString("to")));
+                        Object To = levelCopy.getObjectById(std::stoi(object_it->GetPropertyString("to")));
 
                         y = To.rect.top;
                         x = To.rect.left;
@@ -138,18 +146,39 @@ void Player::action(std::list<Entity*>& entities)
                     }
                 }
 
-                if (it->properties["class"] == "npc")
+                if (object_it->properties["class"] == "npc")
                 {
-                    for (it2 = entities.begin(); it2 != entities.end(); it2++)
+                    for (auto entity_it = entityHandler->entities.begin(); entity_it != entityHandler->entities.end(); entity_it++)
                     {
-                        if ((*it2)->id == it->id)
+                        if ((*entity_it)->id == object_it->id)
                         {
-                            if ((*it2)->isHaveQuest)
+                            if (!dynamic_cast<NPC*>((*entity_it))->questList.empty())
                             {
-                                std::cout << "i can take the quest " << static_cast<NPC&>(*(*it2)).questName << " NPC ID " << (*it2)->id << "\n";
-                                questList[static_cast<NPC&>(*(*it2)).getQuest().questName] = static_cast<NPC&>(*(*it2)).getQuest();
-                                questList[static_cast<NPC&>(*(*it2)).getQuest().questName].status = statuses::taken;
-                                (*it2)->isHaveQuest = false;
+                                
+
+                                switch (questDialog->isShowQuestDialog) {
+
+                                    case true: {
+                                        questDialog->show(dynamic_cast<NPC*>(*entity_it), v);
+                                        state = stateObject::cant_move;
+                                        break;
+
+                                    }
+                                    case false: {
+                                        questDialog->high();
+                                        state = stateObject::stay;
+                                        break;
+                                    }
+                                }
+
+                                //std::cout << "i can take the quest \n";
+                                //questList.push_back("FuckingMouse");
+                                /*
+                                std::cout << "i can take the quest " << static_cast<NPC&>(*(*entity_it)).questName << " NPC ID " << (*entity_it)->id << "\n";
+                                questList[static_cast<NPC&>(*(*entity_it)).getQuest().questName] = static_cast<NPC&>(*(*entity_it)).getQuest();
+                                questList[static_cast<NPC&>(*(*entity_it)).getQuest().questName].status = statuses::taken;
+                                (*entity_it)->isHaveQuest = false;
+                                */
 
                                 break;
                             }

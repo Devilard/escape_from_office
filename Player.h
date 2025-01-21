@@ -11,13 +11,17 @@
 #include "Enemy.h"
 #include "NPC.h"
 #include "Mission.h"
+#include "EntityHandler.h"
+#include "QuestHandler.h"
+#include "QuestDialog.h"
+#include "state.h"
 
 using sf::Keyboard;
 
 class Player : public Entity
 {
 public:
-    enum class stateObject {left, right, up, down, jump, stay};
+    
     stateObject state;
     int playerScore;
     float currentFrame{ 1.0f };
@@ -26,7 +30,8 @@ public:
     std::vector<Object> action_objects;
     bool isActionKeyPressed;
     TileMap levelCopy;
-    std::map<std::string, Quest> questList;
+    std::vector<std::string> questList;
+    QuestDialog* questDialog;
     
     Player(sf::Image& image, sf::String Name, TileMap& lev, float X, float Y, float W, float H);
     sf::Sprite& getExMark();
@@ -35,8 +40,8 @@ public:
     float getPlayerCoordinateX() { return x; }
     float getPlayerCoordinateY() { return y; }
     void checkCollisionWithMap(float Dx, float Dy);
-    void shoot(std::list<Entity*>& entities, sf::Vector2f pos, sf::Image* bulletImg, TileMap* currentLevel);
-    void action(std::list<Entity*>& entities);
+    void shoot(EntityHandler* entityHandler, sf::Vector2f pos, sf::Image* bulletImg, TileMap* currentLevel);
+    void action(EntityHandler* entityHandler, GameView* v);
 };
 
 #endif

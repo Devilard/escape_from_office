@@ -131,7 +131,11 @@
   <object id="2" name="solid" x="32.5" y="1894.86" width="2517.5" height="24.587"/>
   <object id="8" name="solid" x="2549.99" y="1503.67" width="9.9374" height="416.292"/>
   <object id="9" name="Player" x="451.44" y="3743.94" width="26.6667" height="23.5"/>
-  <object id="28" name="User" x="2317.66" y="1824.82" width="64" height="64"/>
+  <object id="28" name="User" x="2317.66" y="1824.82" width="64" height="64">
+   <properties>
+    <property name="class" value="npc"/>
+   </properties>
+  </object>
   <object id="45" name="solid" x="0.0909091" y="1277.18" width="2559.91" height="3.5"/>
   <object id="47" name="door1" type="action" x="2412.76" y="3748.15" width="52.6667" height="50.6667">
    <properties>

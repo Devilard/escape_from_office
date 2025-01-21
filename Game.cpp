@@ -7,10 +7,12 @@ Game::Game()
 	view = new GameView();
 	music = new sf::Music();
 	font = new sf::Font();
+
 	missionText = new sf::Text();
 	missionBgImg = new sf::Image;
 	missionTexture = new sf::Texture();
 	missionSprite = new sf::Sprite();
+
 	mission = new Mission();
 	currentLevel = new TileMap();
 	heroImg = new sf::Image;
@@ -21,6 +23,7 @@ Game::Game()
 	isShowMission = true;
 	levelNumber = 1;
 	questItemImg = new sf::Image;
+	entityHandler = new EntityHandler();
 }
 
 void Game::loadAll()
@@ -76,26 +79,46 @@ void Game::loadAll()
 	collectables = currentLevel->getObjectsByType("collectable");
 
 	
-
+	
 	mission->readQuestFromJson();
 
 	fillEntitiesList();
+
+	for (auto u = users.begin(); u != users.end(); ++u)
+	{
+		if (u->GetPropertyString("QuestName") != "")
+		{
+			 if (dynamic_cast<NPC*>(entityHandler->getEntityById(u->id)) != nullptr)
+			 {
+				 std::cout << u->GetPropertyString("QuestName")  << "\n";
+				 std::cout << entityHandler->getEntityById(u->id) << "\n";
+				 std::cout << dynamic_cast<NPC*>(entityHandler->getEntityById(u->id)) << "\n";
+
+				 dynamic_cast<NPC*>(entityHandler->getEntityById(u->id))->addQuest(u->GetPropertyString("QuestName"));
+			 }
+		}
+		
+	}
+
+	
+	
 
 }
 
 void Game::fillEntitiesList()
 {
+	
 	//Filling the enemy list
 	for (int i = 0; i < enemies.size(); i++)
 	{
 		std::string questName = enemies[i].GetPropertyString("QuestName");
 		if (questName != "")
 		{
-			entities.push_back(new Enemy(*easyEnemyImg, "EasyEnemy", *currentLevel, enemies[i].rect.left, enemies[i].rect.top, 78, 65, questName, enemies[i].id));
+			entityHandler->addEntity(new Enemy(*easyEnemyImg, "EasyEnemy", *currentLevel, enemies[i].rect.left, enemies[i].rect.top, 78, 65, questName, enemies[i].id));
 		}
 		else
 		{
-			entities.push_back(new Enemy(*easyEnemyImg, "EasyEnemy", *currentLevel, enemies[i].rect.left, enemies[i].rect.top, 78, 65, questName, enemies[i].id));
+			entityHandler->addEntity(new Enemy(*easyEnemyImg, "EasyEnemy", *currentLevel, enemies[i].rect.left, enemies[i].rect.top, 78, 65, questName, enemies[i].id));
 		}
 
 	}
@@ -103,7 +126,7 @@ void Game::fillEntitiesList()
 	for (int i = 0; i < enemiesA.size(); i++)
 	{
 		std::string questName = "";
-		entities.push_back(new Enemy(*angelEnemyImg, "EasyEnemy", *currentLevel, enemiesA[i].rect.left, enemiesA[i].rect.top, 78, 65, questName, enemiesA[i].id));
+		entityHandler->addEntity(new Enemy(*angelEnemyImg, "EasyEnemy", *currentLevel, enemiesA[i].rect.left, enemiesA[i].rect.top, 78, 65, questName, enemiesA[i].id));
 	}
 
 	for (int i = 0; i < users.size(); i++)
@@ -111,18 +134,21 @@ void Game::fillEntitiesList()
 		std::string questName = users[i].GetPropertyString("QuestName");
 		if (questName != "")
 		{
-			entities.push_back(new NPC(*userImg, "User", *currentLevel, users[i].rect.left, users[i].rect.top, 64, 64, questName, users[i].id, mission));
+			//std::cout << "string 142 Game.cpp: User id " << users[i].id << "\n";
+			entityHandler->addEntity(new NPC(*userImg, "User", *currentLevel, users[i].rect.left,
+				users[i].rect.top, 64, 64, questName, users[i].id, mission, questHandler));
 		}
 		else
 		{
-			entities.push_back(new NPC(*userImg, "User", *currentLevel, users[i].rect.left, users[i].rect.top, 64, 64, "", users[i].id, mission));
+			entityHandler->addEntity(new NPC(*userImg, "User", *currentLevel, users[i].rect.left,
+				users[i].rect.top, 64, 64, "", users[i].id, mission, questHandler));
 		}
 
 	}
 
 	for (int i = 0; i < collectables.size(); i++)
 	{
-		entities.push_back(new QuestItem(*questItemImg, "questItem", *currentLevel, collectables[i].rect.left, collectables[i].rect.top, 16, 16));
+		entityHandler->addEntity(new QuestItem(*questItemImg, "questItem", *currentLevel, collectables[i].rect.left, collectables[i].rect.top, 16, 16));
 	}
 }
 
@@ -164,10 +190,11 @@ void Game::showMission()
 
 	if (!getPlayer().questList.empty())
 	{
-		std::map<std::string, Quest>::iterator it;
-		it = getPlayer().questList.begin();
-		
-		missionText->setString(it->second.questName + "\n" + it->second.questDescription);
+		for (auto it = getPlayer().questList.begin(); it != getPlayer().questList.end(); ++it)
+		{
+			missionText->setString((*it) + "\n");
+		}
+
 	}
 	else
 	{
@@ -259,7 +286,7 @@ void Game::processInput(sf::RenderWindow& window, sf::Vector2f pos)
 			{
 				if (player->isActionKeyPressed)
 				{
-					player->action(getEntities());
+					player->action(entityHandler, getGameView());
 				}
 
 			}
@@ -275,8 +302,16 @@ void Game::processInput(sf::RenderWindow& window, sf::Vector2f pos)
 		{
 			if (event.key.code == sf::Mouse::Left)
 			{
+				if (getPlayer().state != stateObject::cant_move)
+				{
+					getPlayer().shoot(entityHandler, pos, bulletImg, currentLevel);
+				}
 
-				getPlayer().shoot(getEntities(), pos, bulletImg, currentLevel);
+				if (getPlayer().state == stateObject::cant_move)
+				{
+					
+					getPlayer().questDialog->chooseQuest(window);
+				}
 			}
 		}
 
@@ -288,13 +323,22 @@ void Game::render(sf::RenderWindow& window, std::list<Entity*>::iterator& it)
 {
 	window.clear();
 	window.draw(getCurrentLevel());
-	for (it = getEntities().begin(); it != getEntities().end(); it++)
+	for (auto it = entityHandler->entities.begin(); it != entityHandler->entities.end(); it++)
 	{
-		window.draw((*it)->sprite);
-		if ((*it)->isHaveQuest)
+		if (dynamic_cast<NPC*>((*it)) != nullptr)
 		{
-			window.draw((*it)->getExMark());
+			if (!dynamic_cast<NPC*>((*it))->questList.empty())
+			{
+				window.draw((*it)->getExMark());
+			}
+			window.draw((*it)->sprite);
 		}
+		else
+		{
+			window.draw((*it)->sprite);
+
+		}
+
 	}
 	window.draw(getPlayer().sprite);
 
@@ -315,29 +359,47 @@ void Game::render(sf::RenderWindow& window, std::list<Entity*>::iterator& it)
 
 	}
 
+
+
+	
+	if(!getPlayer().questDialog->isShowQuestDialog) 
+	{
+		window.draw(*(getPlayer().questDialog->sprite));
+		//window.draw(*(getPlayer().questDialog->text));
+		for (std::vector<sf::Text*>::iterator it = getPlayer().questDialog->questList.begin(); it != getPlayer().questDialog->questList.end(); ++it)
+		{
+			window.draw(*(*it));
+		}
+
+		
+		getPlayer().questDialog->update(getGameView());
+
+	}
+	
+
 	window.display();
 }
 
 void Game::entitiesUpdate(float time)
 {
-	std::list<Entity*>::iterator it;
-	std::list<Entity*>::iterator it2;
+	//entityHandler->update(time);
 
-	for (it = entities.begin(); it != entities.end();)
+
+	for (auto it = entityHandler->entities.begin(); it != entityHandler->entities.end();)
 	{
 		Entity* b = *it;
 		b->update(time);
 		if (b->life == false && b->isAnimationDeathEnd == true)
 		{
-			it = entities.erase(it); delete b;
+			it = entityHandler->entities.erase(it); delete b;
 		}
 		else { it++; }
 	}
 
-	for (it = entities.begin(); it != entities.end(); it++)
+	for (auto it = entityHandler->entities.begin(); it != entityHandler->entities.end(); it++)
 	{
 
-		for (it2 = entities.begin(); it2 != entities.end(); it2++)
+		for (auto it2 = entityHandler->entities.begin(); it2 != entityHandler->entities.end(); it2++)
 		{
 			if ((*it)->getRect() != (*it2)->getRect())
 			{
@@ -354,7 +416,7 @@ void Game::entitiesUpdate(float time)
 
 	bool isCollect = false;
 
-	for (it = entities.begin(); it != entities.end();)
+	for (auto it = entityHandler->entities.begin(); it != entityHandler->entities.end();)
 	{
 		isCollect = false;
 
@@ -374,12 +436,17 @@ void Game::entitiesUpdate(float time)
 
 			if ((*it)->name == "questItem")
 			{
+
 				std::string qn = static_cast<QuestItem&>(*(*it)).questName;
+				/*
+				questHandler->getQuestByName();
+
 				if (player->questList[qn].status == statuses::taken)
 				{
 					player->questList[qn].status = statuses::wait_execution;
 					isCollect = true;
 				}
+				*/
 			}
 
 		}
@@ -390,7 +457,7 @@ void Game::entitiesUpdate(float time)
 		}
 		else
 		{
-			it = entities.erase(it);
+			it = entityHandler->entities.erase(it);
 		}
 
 	}

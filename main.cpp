@@ -14,7 +14,7 @@ int main()
     
 
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Escape from Office");
-    window.setFramerateLimit(60);
+    //window.setFramerateLimit(120);
     game->showMenu(window);
 
     game->Loop(window, windowWidth, windowHeight);
