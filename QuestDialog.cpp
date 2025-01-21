@@ -11,7 +11,7 @@ void QuestDialog::init()
 	img->loadFromFile("layouts/img/missionbg.png");
 	texture->loadFromImage(*img);
 	sprite->setTexture(*texture);
-	//sprite->setScale(0.5f, 0.5f);
+	sprite->setScale(0.5f, 0.5f);
 
 	font->loadFromFile("CyrilicOld.TTF");
 
@@ -54,9 +54,7 @@ void QuestDialog::high()
 void QuestDialog::update(GameView* view)
 {
 	sprite->setPosition(view->view->getCenter().x + 190.0f, view->view->getCenter().y - 50.0f);
-	std::cout << view->view->getCenter().y << " \n";
-	std::cout << view->view->getCenter().x << " \n";
-	
+
 	int i = 0;
 	int h_size = 50;
 
@@ -65,31 +63,25 @@ void QuestDialog::update(GameView* view)
 		(*it)->setFillColor(sf::Color::Red);
 		(*it)->setPosition(sprite->getGlobalBounds().left + 100.0f, (sprite->getGlobalBounds().top ) + 50.0f + (h_size * i));
 		
-		
-		
 		++i;
 	}
 
 }
 
-sf::String QuestDialog::chooseQuest(sf::RenderWindow& window)
+sf::String QuestDialog::chooseQuest(sf::RenderWindow& window, GameView* view)
 {
+	sf::Vector2f coursorPosition = window.mapPixelToCoords(sf::Mouse::getPosition(window), *(view->view));
+	
 
 	for (auto it = questList.begin(); it != questList.end(); ++it)
 	{
 		sf::IntRect textRect((*it)->getGlobalBounds().left, (*it)->getGlobalBounds().top,
-			300, 300);
+			(*it)->getGlobalBounds().width, (*it)->getGlobalBounds().height);
 
-		//std::cout << sf::Mouse::getPosition(window).x << " ";
-		//std::cout << sf::Mouse::getPosition(window).y << "\n";
-		//std::cout << textRect.left << " ";
-		//std::cout << textRect.top << " ";
-		//std::cout << textRect.width << " ";
-		//std::cout << textRect.height << " \n";
-		if (textRect.contains(sf::Mouse::getPosition(window)))
+		if (textRect.contains(coursorPosition.x, coursorPosition.y))
 		{
-			
-			std::cout << (*it) << "\n";
+
+			std::cout << (*it)->getString().toAnsiString() << "\n";
 		}
 	}
 	return "fsdf";

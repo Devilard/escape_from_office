@@ -38,7 +38,7 @@ public:
 	void high();
 	void update(GameView* view);
 
-	sf::String chooseQuest(sf::RenderWindow& window);
+	sf::String chooseQuest(sf::RenderWindow& window, GameView* view);
 	
 };
 

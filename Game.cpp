@@ -310,7 +310,7 @@ void Game::processInput(sf::RenderWindow& window, sf::Vector2f pos)
 				if (getPlayer().state == stateObject::cant_move)
 				{
 					
-					getPlayer().questDialog->chooseQuest(window);
+					getPlayer().questDialog->chooseQuest(window, getGameView());
 				}
 			}
 		}
