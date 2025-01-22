@@ -14,7 +14,6 @@
 #include "level.h"
 #include "Entity.h"
 #include "Enemy.h"
-#include "Mission.h"
 #include "GameView.h"
 #include "Player.h"
 #include "Menu.h"
@@ -24,6 +23,7 @@
 #include "EntityHandler.h"
 #include "CollisionEntity.h"
 #include "state.h"
+#include "QuestStatus.h"
 class Game
 {
 public:
@@ -50,7 +50,7 @@ public:
 	sf::Texture* missionTexture;
 	sf::Sprite* missionSprite;
 	bool isShowMission;
-	Mission* mission;
+	
 	int levelNumber;
 
 	QuestHandler* questHandler;

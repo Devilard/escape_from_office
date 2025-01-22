@@ -123,7 +123,7 @@ void Player::shoot(EntityHandler* entityHandler, sf::Vector2f pos, sf::Image* bu
     entityHandler->entities.push_back(new Bullet(*bulletImg, "Bullet", *currentLevel, x, y, 16, 16, pos));
 }
 
-void Player::action(EntityHandler* entityHandler, GameView* v)
+void Player::action(EntityHandler* entityHandler, GameView* v, QuestHandler* qh)
 {
 
     if (state == stateObject::stay || state == stateObject::cant_move)
@@ -154,12 +154,10 @@ void Player::action(EntityHandler* entityHandler, GameView* v)
                         {
                             if (!dynamic_cast<NPC*>((*entity_it))->questList.empty())
                             {
-                                
-
                                 switch (questDialog->isShowQuestDialog) {
 
                                     case true: {
-                                        questDialog->show(dynamic_cast<NPC*>(*entity_it), v);
+                                        questDialog->show(dynamic_cast<NPC*>(*entity_it), v, qh);
                                         state = stateObject::cant_move;
                                         break;
 
@@ -170,15 +168,6 @@ void Player::action(EntityHandler* entityHandler, GameView* v)
                                         break;
                                     }
                                 }
-
-                                //std::cout << "i can take the quest \n";
-                                //questList.push_back("FuckingMouse");
-                                /*
-                                std::cout << "i can take the quest " << static_cast<NPC&>(*(*entity_it)).questName << " NPC ID " << (*entity_it)->id << "\n";
-                                questList[static_cast<NPC&>(*(*entity_it)).getQuest().questName] = static_cast<NPC&>(*(*entity_it)).getQuest();
-                                questList[static_cast<NPC&>(*(*entity_it)).getQuest().questName].status = statuses::taken;
-                                (*entity_it)->isHaveQuest = false;
-                                */
 
                                 break;
                             }

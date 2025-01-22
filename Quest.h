@@ -3,7 +3,7 @@
 
 #include <string>
 
-enum class statuses { wait, done, wait_execution, taken };
+#include "QuestStatus.h"
 
 class Quest
 {
@@ -13,7 +13,7 @@ public:
 	
 	statuses status;
 	
-	Quest(std::string qn = "", std::string des = "");
+	Quest(std::string qn = "", std::string des = "", statuses s = statuses::no_taken);
 };
 
 #endif

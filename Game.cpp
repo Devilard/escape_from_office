@@ -13,7 +13,7 @@ Game::Game()
 	missionTexture = new sf::Texture();
 	missionSprite = new sf::Sprite();
 
-	mission = new Mission();
+	
 	currentLevel = new TileMap();
 	heroImg = new sf::Image;
 	bulletImg = new sf::Image();
@@ -24,6 +24,7 @@ Game::Game()
 	levelNumber = 1;
 	questItemImg = new sf::Image;
 	entityHandler = new EntityHandler();
+	questHandler = new QuestHandler();
 }
 
 void Game::loadAll()
@@ -79,8 +80,7 @@ void Game::loadAll()
 	collectables = currentLevel->getObjectsByType("collectable");
 
 	
-	
-	mission->readQuestFromJson();
+	questHandler->readQuestsFromJson();
 
 	fillEntitiesList();
 
@@ -90,18 +90,11 @@ void Game::loadAll()
 		{
 			 if (dynamic_cast<NPC*>(entityHandler->getEntityById(u->id)) != nullptr)
 			 {
-				 std::cout << u->GetPropertyString("QuestName")  << "\n";
-				 std::cout << entityHandler->getEntityById(u->id) << "\n";
-				 std::cout << dynamic_cast<NPC*>(entityHandler->getEntityById(u->id)) << "\n";
-
 				 dynamic_cast<NPC*>(entityHandler->getEntityById(u->id))->addQuest(u->GetPropertyString("QuestName"));
 			 }
 		}
 		
 	}
-
-	
-	
 
 }
 
@@ -136,12 +129,12 @@ void Game::fillEntitiesList()
 		{
 			//std::cout << "string 142 Game.cpp: User id " << users[i].id << "\n";
 			entityHandler->addEntity(new NPC(*userImg, "User", *currentLevel, users[i].rect.left,
-				users[i].rect.top, 64, 64, questName, users[i].id, mission, questHandler));
+				users[i].rect.top, 64, 64, questName, users[i].id, questHandler));
 		}
 		else
 		{
 			entityHandler->addEntity(new NPC(*userImg, "User", *currentLevel, users[i].rect.left,
-				users[i].rect.top, 64, 64, "", users[i].id, mission, questHandler));
+				users[i].rect.top, 64, 64, "", users[i].id, questHandler));
 		}
 
 	}
@@ -182,11 +175,7 @@ void Game::changeLevel(int nl)
 
 void Game::showMission()
 {
-	std::ostringstream playerHealthString;
-	playerHealthString << getPlayer().health;
-	std::ostringstream missionTextString;
-	missionTextString << mission->getTextMission(mission->getCurrentMisson(static_cast<int>(getPlayer().getPlayerCoordinateX())));
-	//missionText->setString("«доровье: " + playerHealthString.str() + "\n" + missionTextString.str());
+
 
 	if (!getPlayer().questList.empty())
 	{
@@ -286,7 +275,7 @@ void Game::processInput(sf::RenderWindow& window, sf::Vector2f pos)
 			{
 				if (player->isActionKeyPressed)
 				{
-					player->action(entityHandler, getGameView());
+					player->action(entityHandler, getGameView(), questHandler);
 				}
 
 			}
@@ -309,8 +298,13 @@ void Game::processInput(sf::RenderWindow& window, sf::Vector2f pos)
 
 				if (getPlayer().state == stateObject::cant_move)
 				{
-					
-					getPlayer().questDialog->chooseQuest(window, getGameView());
+					sf::String s = getPlayer().questDialog->chooseQuest(window, getGameView(), questHandler);
+					if (s != "" && questHandler->getQuestByName(s)->status == statuses::no_taken)
+					{
+						getPlayer().questList.push_back(s);
+						questHandler->changeQuestStatus(s, statuses::taken);
+						
+					}
 				}
 			}
 		}
@@ -436,17 +430,25 @@ void Game::entitiesUpdate(float time)
 
 			if ((*it)->name == "questItem")
 			{
-
-				std::string qn = static_cast<QuestItem&>(*(*it)).questName;
-				/*
-				questHandler->getQuestByName();
-
-				if (player->questList[qn].status == statuses::taken)
+				std::string qn = "";
+				if (dynamic_cast<QuestItem*>((*it)) != nullptr)
 				{
-					player->questList[qn].status = statuses::wait_execution;
-					isCollect = true;
+					qn = dynamic_cast<QuestItem*>((*it))->questName;
 				}
-				*/
+				
+				
+				for (auto playerQuestsIt = getPlayer().questList.begin(); playerQuestsIt != getPlayer().questList.end(); ++playerQuestsIt)
+				{
+					if ((*playerQuestsIt) == qn)
+					{
+						if (questHandler->getQuestByName(qn)->status == statuses::taken)
+						{
+							questHandler->getQuestByName(qn)->status = statuses::done;
+							isCollect = true;
+						}
+					}
+				}
+				
 			}
 
 		}
@@ -455,7 +457,7 @@ void Game::entitiesUpdate(float time)
 		{
 			it++;
 		}
-		else
+		else if(isCollect == true)
 		{
 			it = entityHandler->entities.erase(it);
 		}

@@ -20,18 +20,22 @@ void QuestDialog::init()
 	text->setFillColor(sf::Color::Red);
 }
 
-void QuestDialog::show(const NPC* npc, GameView* view)
+void QuestDialog::show(const NPC* npc, GameView* view, QuestHandler* qh)
 {
+	
 	//Заполняет вектор questList названиями квестов
 	if (!npc->questList.empty())
 	{
 		for (std::vector<sf::String>::const_iterator it = npc->questList.begin(); it != npc->questList.end(); ++it)
 		{
-			questList.push_back(new sf::Text((*it), *font, 20));
+			if (qh->getQuestByName((*it))->status != statuses::no_more_be_taken)
+			{
+				questList.push_back(new sf::Text((*it), *font, 20));
+			}
 		}
 	}
 	
-	questList.push_back(new sf::Text("tes quest", *font, 20));
+	
 
 	//Устанавливаем позицию спрайта на экране (бэкграунд)
 	update(view);
@@ -68,10 +72,11 @@ void QuestDialog::update(GameView* view)
 
 }
 
-sf::String QuestDialog::chooseQuest(sf::RenderWindow& window, GameView* view)
+sf::String QuestDialog::chooseQuest(sf::RenderWindow& window, GameView* view, QuestHandler* qh)
 {
 	sf::Vector2f coursorPosition = window.mapPixelToCoords(sf::Mouse::getPosition(window), *(view->view));
 	
+	sf::String result = "";
 
 	for (auto it = questList.begin(); it != questList.end(); ++it)
 	{
@@ -81,8 +86,13 @@ sf::String QuestDialog::chooseQuest(sf::RenderWindow& window, GameView* view)
 		if (textRect.contains(coursorPosition.x, coursorPosition.y))
 		{
 
-			std::cout << (*it)->getString().toAnsiString() << "\n";
+			result = (*it)->getString().toAnsiString();
 		}
 	}
-	return "fsdf";
+	if(qh->getQuestByName(result)->status == statuses::done)
+	{
+		qh->getQuestByName(result)->status = statuses::no_more_be_taken;
+		std::cout << "successfuly end first quest! Congratulation!";
+	}
+	return result;
 }

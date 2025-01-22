@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 #include "NPC.h"
 #include "GameView.h"
+#include "QuestHandler.h"
 
 class QuestDialog
 {
@@ -16,7 +17,7 @@ public:
 	sf::Sprite* sprite;
 	sf::Font* font;
 	bool isShowQuestDialog;
-	vector<sf::Text*> questList;
+	std::vector<sf::Text*> questList;
 	
 
 	QuestDialog() : text(nullptr), img(nullptr), texture(nullptr),
@@ -34,11 +35,11 @@ public:
 
 	void init();
 
-	void show(const NPC* npc, GameView* view);
+	void show(const NPC* npc, GameView* view, QuestHandler* qh);
 	void high();
 	void update(GameView* view);
 
-	sf::String chooseQuest(sf::RenderWindow& window, GameView* view);
+	sf::String chooseQuest(sf::RenderWindow& window, GameView* view, QuestHandler* qh);
 	
 };
 

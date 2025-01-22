@@ -10,7 +10,6 @@
 #include "GameView.h"
 #include "Enemy.h"
 #include "NPC.h"
-#include "Mission.h"
 #include "EntityHandler.h"
 #include "QuestHandler.h"
 #include "QuestDialog.h"
@@ -41,7 +40,7 @@ public:
     float getPlayerCoordinateY() { return y; }
     void checkCollisionWithMap(float Dx, float Dy);
     void shoot(EntityHandler* entityHandler, sf::Vector2f pos, sf::Image* bulletImg, TileMap* currentLevel);
-    void action(EntityHandler* entityHandler, GameView* v);
+    void action(EntityHandler* entityHandler, GameView* v, QuestHandler* qh);
 };
 
 #endif

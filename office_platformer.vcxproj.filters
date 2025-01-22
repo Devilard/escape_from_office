@@ -34,9 +34,6 @@
     <ClCompile Include="Menu.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="Mission.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="NPC.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
@@ -78,9 +75,6 @@
     <ClInclude Include="level.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="Mission.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
     <ClInclude Include="NPC.h">
       <Filter>Header files</Filter>
     </ClInclude>
@@ -112,6 +106,9 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="state.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestStatus.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,7 +1,7 @@
 #include "NPC.h"
 
 NPC::NPC(sf::Image& image, sf::String Name, TileMap& lvl, float X, float Y, int W, int H,
-	std::string qn, int ID, Mission* missions, QuestHandler* questHandelr)
+	std::string qn, int ID, QuestHandler* questHandelr)
 	: Entity(image, Name, X, Y, W, H)
 {
 

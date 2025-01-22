@@ -158,7 +158,6 @@
     <ClCompile Include="libs\tinyxml2\tinyxml2.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menu.cpp" />
-    <ClCompile Include="Mission.cpp" />
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Quest.cpp" />
@@ -177,7 +176,6 @@
     <ClInclude Include="level.h" />
     <ClInclude Include="libs\tinyxml2\tinyxml2.h" />
     <ClInclude Include="Menu.h" />
-    <ClInclude Include="Mission.h" />
     <ClInclude Include="NPC.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="GameView.h" />
@@ -185,6 +183,7 @@
     <ClInclude Include="QuestDialog.h" />
     <ClInclude Include="QuestHandler.h" />
     <ClInclude Include="QuestItem.h" />
+    <ClInclude Include="QuestStatus.h" />
     <ClInclude Include="state.h" />
   </ItemGroup>
   <ItemGroup>
